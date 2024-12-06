@@ -15,7 +15,7 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 2. Wait for the applet to create your Google Sheet (may take up to an hour) and make the sheet public for those with access to the link.
 3. Find your **SPREADSHEET_ID** from the Google Sheets url:<br>
 h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=0#gid=0
-4. Paste your **SPREADSHEET_ID** into the `credentials.py`
+4. Paste your **SPREADSHEET_ID** into `credentials.py`
 
 ### Usage
 1. Run `spotify.py`
