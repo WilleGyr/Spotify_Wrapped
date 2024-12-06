@@ -7,8 +7,11 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 ## Getting Started
 ### Installation
 1. Make sure you have **[Python](https://www.python.org/downloads/)** installed
-2. Install **[Requests](https://pypi.org/project/requests/)** by running `pip install requests` in the command line
-2. **Google Sheet** connected to your **Spotify** account through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
+2. Install both **[Requests](https://pypi.org/project/requests/)** and **[Spotipy](https://spotipy.readthedocs.io/en/2.24.0/)** by running the following in the command line:<br>
+`pip install requests`<br>
+`pip install spotipy`
+3. **Google Sheet** connected to your **Spotify** account through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
+4. An active **[Spotify Developer account](https://developer.spotify.com/)**
  
 ### Google Sheet Setup
 1. Sign up and connect **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)** to your Spotify account and Google Drive.
