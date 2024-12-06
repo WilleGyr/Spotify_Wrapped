@@ -18,7 +18,7 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 3. Open `Spotify_Stats.txt` to view your personalized Spotify Wrapped summary.
 
 ### Google Sheet Setup
-1. Sign up and connect **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)** to your Spotify account and Google Drive account.
+1. Sign up and connect **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)** to your Spotify account and Google Drive.
 2. Wait for the applet to create your Google Sheet (may take up to an hour) and make the sheet public for those with access to the link.
 3. Find your **SPREADSHEET_ID** from the Google Sheets url:<br>
 h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=0#gid=0
