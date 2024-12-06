@@ -27,7 +27,7 @@ def load_csv_to_dict(filepath):
 
 # Function to write Spotify statistics to a text file
 def write(total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
-    with open('Spotify_Stats.txt', 'a', encoding='utf-8') as f:
+    with open('Spotify_Wrapped.txt', 'a', encoding='utf-8') as f:
         if type == 'Yearly':
             f.write(f'----- {type} -----\n\nStats:\n')
         elif type.isdigit():
