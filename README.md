@@ -19,10 +19,12 @@ h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=
 
 ### Usage
 1. Run `spotify.py`
-2. The script will download your Spotify data from the Google Sheet, analyze it, and generate two files:
+2. You will be prompted to specify your wrapped by entering a **month,** **year,** or **month and year** (in any order). Leave blank for complete wrapped for the current year. <br>
+Examples: `March 2024`, `2025 January`, `2024`, `July`
+3. The script will download your Spotify data from the Google Sheet, analyze it, and generate two files:
     - **spotify.csv**: A CSV file containing your Spotify listening data.
-    - **Spotify_Stats.txt**: A text file summarizing your Spotify Wrapped statistics.
-3. Open `Spotify_Stats.txt` to view your personalized Spotify Wrapped summary.
+    - **Spotify_Wrapped.txt**: A text file summarizing your Spotify Wrapped statistics.
+4. Open `Spotify_Wrapped.txt` to view your personalized Spotify Wrapped summary.
 
 ## License
 Distributed under the MIT License. See `LICENSE.txt` for more information.
