@@ -4,7 +4,7 @@ from credentials import SPREADSHEET_ID
 from datetime import datetime
 
 # Reset the Spotify_Stats.txt file
-with open('Spotify_Stats.txt', 'w') as f:
+with open('Spotify_Wrapped.txt', 'w') as f:
     f.write('----- Spotify Wrapped -----\n\n')
 
 # Download the CSV file from Google Sheets and load it into a dictionary
