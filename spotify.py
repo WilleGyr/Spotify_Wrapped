@@ -1,38 +1,39 @@
 import sys
-from collections import Counter
-import math
-from spotify_utils import getGoogleSeet, load_csv_to_dict, write, duplicates
+from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped
 from credentials import SPREADSHEET_ID
+from datetime import datetime
+
+# Reset the Spotify_Stats.txt file
+with open('Spotify_Stats.txt', 'w') as f:
+    f.write('----- Spotify Wrapped -----\n\n')
 
 # Download the CSV file from Google Sheets and load it into a dictionary
 csv_filepath = getGoogleSeet(SPREADSHEET_ID, '', "spotify.csv")
 data_dict = load_csv_to_dict(csv_filepath)
+data_dict = load_csv_to_dict('spotify.csv')
 
-# Count the total number of songs
-total_songs = len(data_dict)
+# Prompt the user for input
+print(f"Specify year, month or month of year. Otherwise leave blank for the complete {datetime.now().year} wrapped:")
+user_input = input("")
 
-# Estimate the total listening time (assuming an average song length of 3.5 minutes)
-average_song_length = 3.5
-listening_time = math.ceil(average_song_length * total_songs)
+# Split the input and handle cases where the input is blank or has only one value
+inputs = user_input.split()
+first = inputs[0] if len(inputs) > 0 else None
+second = inputs[1] if len(inputs) > 1 else None
 
-# Extract the list of unique artists from the data
-unique_artists = [data_dict[i][2] for i in range(total_songs)]
+# Capitalize the first and second values if they are not digits
+if first and not first.isdigit():
+    first = first.capitalize()
+if second and not second.isdigit():
+    second = second.capitalize()
 
-# Count the occurrences of each song
-song_counts = Counter([data_dict[i][1] for i in range(total_songs)])
-
-# Count the occurrences of each artist
-artist_counts = Counter(unique_artists)
-
-# Find duplicate and unique songs
-duplicate_songs, unique_songs = duplicates(data_dict)
-
-# Get the top 10 artists and songs by count
-top_artists = artist_counts.most_common(10)
-top_songs = [(song, data_dict[next(i for i in data_dict if data_dict[i][1] == song)][2], count) for song, count in song_counts.most_common(10)]
-
-# Write the results to a text file
-write(total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs)
+# Call the wrapped function with the appropriate arguments
+if first and not second:
+    wrapped(data_dict, first)
+elif first and second:
+    wrapped(data_dict, first, second)
+else:
+    wrapped(data_dict)
 
 # Exit the program
 sys.exit(0)
