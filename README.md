@@ -27,4 +27,4 @@ Examples: `March 2024`, `2025 January`, `2024`, `July`
 4. Open `Spotify_Wrapped.txt` to view your personalized Spotify Wrapped summary.
 
 ## License
-Distributed under the MIT License. See the [LICENSE](LICENSE.txt) file for more information.
+Distributed under the MIT License. See the [LICENSE](LICENSE) file for more information.
