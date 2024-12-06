@@ -12,7 +12,7 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 
 ### Usage
 1. Run `spotify.py`
-2. The script will download your Spotify data from the Google Sheet, process it, and generate two files:
+2. The script will download your Spotify data from the Google Sheet, analyze it, and generate two files:
     - **spotify.csv**: A CSV file containing your Spotify listening data.
     - **Spotify_Stats.txt**: A text file summarizing your Spotify Wrapped statistics.
 3. Open `Spotify_Stats.txt` to view your personalized Spotify Wrapped summary.
