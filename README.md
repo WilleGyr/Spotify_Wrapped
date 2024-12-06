@@ -4,6 +4,7 @@
 
 Tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
 <br>
+<br>
 
 ## Getting Started
 ### Installation
