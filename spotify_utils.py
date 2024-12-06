@@ -1,6 +1,9 @@
 import os, requests, sys, csv, math
 from collections import Counter
 from datetime import datetime
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from credentials import CLIENT_ID, CLIENT_SECRET
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSeet(SPREADSHEET_ID, outDir, outFile):
@@ -31,7 +34,7 @@ def load_csv_to_dict(filepath):
     return data  # Return the populated dictionary
 
 # Function to write Spotify statistics to a text file
-def write(total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
+def write(data_dict, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
     with open('Spotify_Wrapped.txt', 'a', encoding='utf-8') as f:
         # Write the header based on the type of specification
         if type == 'Yearly':
@@ -45,7 +48,7 @@ def write(total_songs, unique_songs, unique_artists, listening_time, top_artists
         f.write(f'Total listenings: {total_songs}\n')                   # Write the total number of listenings
         f.write(f'Unique songs: {len(unique_songs)}\n')                 # Write the number of unique songs
         f.write(f'Unique artists: {len(set(unique_artists))}\n')        # Write the number of unique artists
-        f.write(f'Total listening time: {listening_time} minutes\n\n')    # Write the total listening time in minutes
+        f.write(f'Total listening time: {duration_check(data_dict)} minutes\n\n')    # Write the total listening time in minutes
         
         # Write the top 10 artists
         f.write('Top 10 artists:\n')
@@ -110,7 +113,7 @@ def yearly_wrapped(data_dict, year, write_year=None):
     top_songs = [(song, year_data[next(i for i in year_data if year_data[i][1] == song)][2], count) for song, count in song_counts.most_common(10)]
 
     # Write the results to a text file
-    write(total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, write_year)
+    write(data_dict, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, write_year)
 
 # Function to calculate Spotify Wrapped statistics for a specific month
 def monthly_wrapped(month, year, data_dict):
@@ -144,7 +147,7 @@ def monthly_wrapped(month, year, data_dict):
     top_songs = [(song, month_data[next(i for i in month_data if month_data[i][1] == song)][2], count) for song, count in song_counts.most_common(10)]
     
     # Write the results to a text file
-    write(total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
+    write(month_data, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
 
 # Function to wrap the monthly and yearly functions
 def wrapped(data_dict, first=None, second=None):
@@ -173,3 +176,24 @@ def wrapped(data_dict, first=None, second=None):
     else:
         print('Invalid arguments')
         sys.exit(1)
+
+def duration_check(data_dict):
+    duration_ms = 0
+    for i in data_dict:
+        track_id = data_dict[i][3]
+        auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+        sp = spotipy.Spotify(auth_manager=auth_manager)
+
+        # Suppose you have a Spotify track URI or ID
+        # Example track URI from Spotify: "spotify:track:11dFghVXANMlKmJXsNCbNl"
+        track_uri = "spotify:track:" + track_id
+
+        # Fetch track details
+        track_info = sp.track(track_uri)
+
+        # Extract duration (in milliseconds)
+        duration_ms += track_info.get('duration_ms', 0)
+    
+    duration_ms = duration_ms // 60000
+    
+    return duration_ms
