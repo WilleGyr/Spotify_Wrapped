@@ -11,6 +11,7 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 3. **Google Sheet** connected to your **Spotify account** through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
 <br>
 <br>
+
 ### Usage
 1. Run `spotify.py`
 2. The script will download your Spotify data from the Google Sheet, analyze it, and generate two files:
