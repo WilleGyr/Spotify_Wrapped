@@ -10,7 +10,6 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 2. Install **[pandas](https://pandas.pydata.org/)** by running `pip install pandas` in the terminal
 3. **Google Sheet** connected to your **Spotify account** through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
 <br>
-<br>
 
 ### Usage
 1. Run `spotify.py`
@@ -18,7 +17,6 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
     - **spotify.csv**: A CSV file containing your Spotify listening data.
     - **Spotify_Stats.txt**: A text file summarizing your Spotify Wrapped statistics.
 3. Open `Spotify_Stats.txt` to view your personalized Spotify Wrapped summary.
-<br>
 <br>
 
 ### Google Sheet Setup
@@ -28,6 +26,6 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=0#gid=0
 4. Paste your **SPREADSHEET_ID** into the `credentials.py`
 <br>
-<br>
+
 ## License
 Distributed under the MIT License. See `LICENSE.txt` for more information.
