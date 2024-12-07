@@ -4,6 +4,8 @@
 
 Tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
 
+*The latest version requires a **[Spotify Developer account](https://developer.spotify.com/)**. If you don't have access to one, please download version 1.0.0. View **[CHANGELOG](CHANGELOG)** for more information.
+
 ## Getting Started
 ### Installation
 1. Make sure you have **[Python](https://www.python.org/downloads/)** installed
@@ -19,6 +21,13 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 3. Find your **SPREADSHEET_ID** from the Google Sheets url:<br>
 h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=0#gid=0
 4. Paste your **SPREADSHEET_ID** into `credentials.py`
+
+### Spotipy Setup
+1. Browse to **[Spotify for developers](https://developer.spotify.com/dashboard/applications)**
+2. Log in with your Spotify account
+3. Click on **'Create an app'** and provide the required information
+4. After creation, you see your **CLIENT_ID** and you can click on ‘Show client secret` to unhide your **CLIENT_SECRET**
+5. Paste your **CLIENT_ID** and **SECRET_ID** into `credentials.py`
 
 ### Usage
 1. Run `spotify.py`
