@@ -36,4 +36,5 @@ else:
     wrapped(data_dict)
 
 # Exit the program
+print("Spotify Wrapped has been successfully generated in the file Spotify_Wrapped.txt!")
 sys.exit(0)
