@@ -178,21 +178,20 @@ def wrapped(data_dict, first=None, second=None):
         sys.exit(1)
 
 def duration_check(data_dict):
+    track_ids = [data_dict[i][3] for i in data_dict]
+    auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
+    # Split track_ids into chunks of 50 (maximum allowed by Spotify API)
+    chunks = [track_ids[i:i + 50] for i in range(0, len(track_ids), 50)]
+    
     duration_ms = 0
-    for i in data_dict:
-        track_id = data_dict[i][3]
-        auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
-        sp = spotipy.Spotify(auth_manager=auth_manager)
-
-        # Suppose you have a Spotify track URI or ID
-        # Example track URI from Spotify: "spotify:track:11dFghVXANMlKmJXsNCbNl"
-        track_uri = "spotify:track:" + track_id
-
-        # Fetch track details
-        track_info = sp.track(track_uri)
-
-        # Extract duration (in milliseconds)
-        duration_ms += track_info.get('duration_ms', 0)
+    for chunk in chunks:
+        track_uris = ["spotify:track:" + track_id for track_id in chunk]
+        track_infos = sp.tracks(track_uris)
+        
+        for track_info in track_infos['tracks']:
+            duration_ms += track_info.get('duration_ms', 0)
     
     duration_ms = duration_ms // 60000
     
