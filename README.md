@@ -4,7 +4,7 @@
 
 Tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
 
-*The latest version requires a **[Spotify Developer account](https://developer.spotify.com/)**. If you don't have access to one, please download version 1.0.0. View **[CHANGELOG](CHANGELOG)** for more information.
+*The latest version requires a **[Spotify Developer account](https://developer.spotify.com/)**. If you don't have access to one, please download version 1.0.0. View the **[CHANGELOG](CHANGELOG)** for more information.
 
 ## Getting Started
 ### Installation
