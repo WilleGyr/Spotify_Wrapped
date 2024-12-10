@@ -6,6 +6,15 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 
 *The **[latest version](https://github.com/WilleGyr/Spotify_Wrapped/releases/latest)** requires a **[Spotify Developer account](https://developer.spotify.com/)**. If you don't have access to one, please download **[version 1.0.0](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v1.0.0)**. View the **[CHANGELOG](CHANGELOG)** for more information.
 
+## Table of Contents
+- [Getting Started](#getting-started)
+    - [Installation](#installation)
+    - [Google Sheet Setup](#google-sheet-setup)
+    - [Spotipy Setup](#spotipy-setup)
+    - [Usage](#usage)
+- [Roadmap](#roadmap)
+- [License](#license)
+
 ## Getting Started
 ### Installation
 1. Make sure you have **[Python](https://www.python.org/downloads/)** installed
@@ -45,6 +54,12 @@ Examples:
     - **spotify.csv**: A CSV file containing your Spotify listening data.
     - **Spotify_Wrapped.txt**: A text file summarizing your Spotify Wrapped statistics.
 4. Open `Spotify_Wrapped.txt` to view your personalized Spotify Wrapped summary.
+
+## Roadmap
+- [ ] Add heatmaps
+- [ ] Add genre analysis
+- [ ] Add playlist maker
+- [ ] 
 
 ## License
 Distributed under the MIT License. See the [LICENSE](LICENSE) file for more information.
