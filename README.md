@@ -59,7 +59,6 @@ Examples:
 - [ ] Add heatmaps
 - [ ] Add genre analysis
 - [ ] Add playlist maker
-- [ ] 
 
 ## License
 Distributed under the MIT License. See the [LICENSE](LICENSE) file for more information.
