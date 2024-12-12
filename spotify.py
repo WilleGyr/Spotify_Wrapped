@@ -1,7 +1,9 @@
-import sys
-from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped
+import sys, time, asyncio
+from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped, check_genres
 from credentials import SPREADSHEET_ID
 from datetime import datetime
+
+start_time = time.time()
 
 # Reset the Spotify_Stats.txt file
 with open('Spotify_Wrapped.txt', 'w') as f:
@@ -13,7 +15,8 @@ data_dict = load_csv_to_dict(csv_filepath)
 
 # Prompt the user for input
 print(f"Specify year, month or month of year. Otherwise leave blank for the complete {datetime.now().year} wrapped:")
-user_input = input("")
+#user_input = input("")
+user_input = ""
 print("Preparing Spotify Wrapped...")
 
 # Split the input and handle cases where the input is blank or has only one value
@@ -35,6 +38,13 @@ elif first and second:
 else:
     wrapped(data_dict)
 
+# List to store all artists
+all_artists = [data_dict[i][2] for i in data_dict]
+
+# Get genres for all artists asynchronously and print the most common genres
+genre_counts = asyncio.run(check_genres(data_dict))
+
 # Exit the program
 print("Spotify Wrapped has been successfully generated in the file Spotify_Wrapped.txt!")
+print("Process finished --- %s seconds ---" % (time.time() - start_time))
 sys.exit(0)

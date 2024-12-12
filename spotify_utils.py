@@ -1,7 +1,6 @@
-import os, requests, sys, csv, math
+import os, requests, sys, csv, math, asyncio, aiohttp, spotipy
 from collections import Counter
 from datetime import datetime
-import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from credentials import CLIENT_ID, CLIENT_SECRET
 
@@ -64,7 +63,18 @@ def write(data_dict, total_songs, unique_songs, unique_artists, listening_time, 
         for song, artist, count in top_songs:
             f.write(f'{num}. {song} ({artist}): {count}\n')
             num += 1
-        f.write('\n\n')
+        f.write('\n')
+
+        if type.isdigit():
+            # Write the top 10 genres
+            f.write('Top 10 genres:\n')
+            genre_counts = asyncio.run(check_genres(data_dict))
+            num = 1
+            for genre, count in genre_counts:
+                f.write(f'{num}. {genre}: {count}\n')
+                num += 1
+            f.write('\n')
+        f.write('\n')
 
 # Function to find duplicate songs in the data dictionary
 def duplicates(data_dict):
@@ -196,3 +206,45 @@ def duration_check(data_dict):
     duration_ms = duration_ms // 60000
     
     return duration_ms
+
+# Cache to store artist genres
+artist_genre_cache = {}
+
+# Initialize Spotify client globally
+auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+sp = spotipy.Spotify(auth_manager=auth_manager)
+
+async def fetch_artist_genre(session, artist_name):
+    if (artist_name in artist_genre_cache):
+        return artist_name, artist_genre_cache[artist_name]
+    
+    results = sp.search(q=f'artist:{artist_name}', type='artist', limit=1)
+    items = results['artists']['items']
+    if len(items) > 0:
+        artist = items[0]
+        genres = artist['genres']
+        artist_genre_cache[artist_name] = genres
+        return artist_name, genres
+    else:
+        artist_genre_cache[artist_name] = []
+        return artist_name, []
+
+async def get_artists_genres(artist_names):
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_artist_genre(session, artist_name) for artist_name in artist_names]
+        results = await asyncio.gather(*tasks)
+        return dict(results)
+
+async def check_genres(data_dict):
+    all_artists = [data_dict[i][2] for i in data_dict]
+    artist_genres = await get_artists_genres(all_artists)
+    all_genres = []
+
+    for i in data_dict:
+        artist = data_dict[i][2]
+        genres = artist_genres.get(artist, [])
+        if genres:
+            all_genres.extend(genres)
+
+    genre_counts = Counter(all_genres)
+    return genre_counts.most_common(10)
