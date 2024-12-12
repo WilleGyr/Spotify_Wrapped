@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [1.2.0] - 2024-12-12
 
 ### Added
-- Functions that analyzes finds the artist of each song listened to, find the artist's genres and then lists the top 10 most listened to genres.
+- Functions that analyze finds the artist of each song listened to, find the artist's genres and then lists the top 10 most listened to genres.
 
 ## [1.1.0] - 2024-12-07
 
