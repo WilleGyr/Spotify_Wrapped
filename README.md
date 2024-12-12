@@ -56,8 +56,8 @@ Examples:
 4. Open `Spotify_Wrapped.txt` to view your personalized Spotify Wrapped summary.
 
 ## Roadmap
+- [x] Add genre analysis
 - [ ] Add heatmaps
-- [ ] Add genre analysis
 - [ ] Add playlist maker
 
 ## License
