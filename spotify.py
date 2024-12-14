@@ -15,8 +15,7 @@ data_dict = load_csv_to_dict(csv_filepath)
 
 # Prompt the user for input
 print(f"Specify year, month or month of year. Otherwise leave blank for the complete {datetime.now().year} wrapped:")
-#user_input = input("")
-user_input = ""
+user_input = input("")
 print("Preparing Spotify Wrapped...")
 
 # Split the input and handle cases where the input is blank or has only one value
