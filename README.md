@@ -57,6 +57,7 @@ Examples:
 
 ## Roadmap
 - [x] Add genre analysis
+- [ ] Optimize genre calculations
 - [ ] Add heatmaps
 - [ ] Add playlist maker
 
