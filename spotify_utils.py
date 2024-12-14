@@ -32,7 +32,7 @@ def load_csv_to_dict(filepath):
             data[i] = row  # Add each row to the dictionary with the index as the key
     return data  # Return the populated dictionary
 
-def test_genre_finder(data_dict):
+def genre_finder(data_dict):
     genres = []
     artist_genres = {}
 
@@ -194,7 +194,7 @@ def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
 
 # Function to wrap the monthly and yearly functions
 def wrapped(data_dict, first=None, second=None):
-    sorted_genre_counts = test_genre_finder(data_dict)
+    sorted_genre_counts = genre_finder(data_dict)
     # If only a year is given
     if first and first.isdigit() and second == None:
         yearly_wrapped(data_dict, sorted_genre_counts, first, first)

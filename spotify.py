@@ -1,5 +1,5 @@
 import sys, time
-from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped, check_genres, test_genre_finder
+from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped
 from credentials import SPREADSHEET_ID
 from datetime import datetime
 
