@@ -33,6 +33,8 @@ def load_csv_to_dict(filepath):
     return data  # Return the populated dictionary
 
 def genre_finder(data_dict):
+    auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    sp = spotipy.Spotify(auth_manager=auth_manager)
     genres = []
     artist_genres = {}
 
