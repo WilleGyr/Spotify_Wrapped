@@ -1,5 +1,5 @@
-import sys, time, asyncio
-from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped, check_genres
+import sys, time
+from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped, check_genres, test_genre_finder
 from credentials import SPREADSHEET_ID
 from datetime import datetime
 
@@ -37,12 +37,6 @@ elif first and second:
     wrapped(data_dict, first, second)
 else:
     wrapped(data_dict)
-
-# List to store all artists
-all_artists = [data_dict[i][2] for i in data_dict]
-
-# Get genres for all artists asynchronously and print the most common genres
-genre_counts = asyncio.run(check_genres(data_dict))
 
 # Exit the program
 print("Spotify Wrapped has been successfully generated in the file Spotify_Wrapped.txt!")

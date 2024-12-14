@@ -1,5 +1,5 @@
-import os, requests, sys, csv, math, asyncio, aiohttp, spotipy
-from collections import Counter
+import os, requests, sys, csv, math, spotipy
+from collections import Counter, defaultdict
 from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 from credentials import CLIENT_ID, CLIENT_SECRET
@@ -32,8 +32,42 @@ def load_csv_to_dict(filepath):
             data[i] = row  # Add each row to the dictionary with the index as the key
     return data  # Return the populated dictionary
 
+def test_genre_finder(data_dict):
+    genres = []
+    artist_genres = {}
+
+    # Count the total number of songs
+    total_songs = len(data_dict)
+    
+    # Extract the list of unique artists from the data
+    unique_artists = list(set(data_dict[i][2] for i in range(total_songs)))
+    
+    for i in unique_artists:
+        artist = i
+        results = sp.search(q=f'artist:{artist}', type='artist', limit=1)
+        items = results['artists']['items']
+        if len(items) > 0:
+            artist = items[0]
+            genres = artist['genres']
+            artist_genres[i] = genres
+    
+    # Create a dictionary to store genre counts
+    genre_counts = defaultdict(int)
+    
+    # Iterate through artist_genres and update genre counts
+    for artist, genres in artist_genres.items():
+        # Find the number of times the artist has been listened to
+        listen_count = sum(1 for i in range(total_songs) if data_dict[i][2] == artist)
+        for genre in genres:
+            genre_counts[genre] += listen_count
+    
+    # Sort the dictionary by values
+    sorted_genre_counts = dict(sorted(genre_counts.items(), key=lambda item: item[1], reverse=True))
+    
+    return sorted_genre_counts
+
 # Function to write Spotify statistics to a text file
-def write(data_dict, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
+def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
     with open('Spotify_Wrapped.txt', 'a', encoding='utf-8') as f:
         # Write the header based on the type of specification
         if type == 'Yearly':
@@ -66,11 +100,10 @@ def write(data_dict, total_songs, unique_songs, unique_artists, listening_time, 
         f.write('\n')
 
         if type.isdigit():
-            # Write the top 10 genres
-            f.write('Top 10 genres:\n')
-            genre_counts = asyncio.run(check_genres(data_dict))
             num = 1
-            for genre, count in genre_counts:
+            # Write the sorted genre counts
+            f.write('\nTop genres:\n')
+            for genre, count in list(sorted_genre_counts.items())[:10]:
                 f.write(f'{num}. {genre}: {count}\n')
                 num += 1
             f.write('\n')
@@ -92,7 +125,7 @@ def duplicates(data_dict):
     return duplicate_songs, unique_songs
 
 # Function to calculate Spotify Wrapped statistics for a specific year
-def yearly_wrapped(data_dict, year, write_year=None):
+def yearly_wrapped(data_dict, sorted_genre_counts, year, write_year=None):
     # Filter the data for the specified month and year
     filtered_data = {key: data_dict[key] for key in data_dict if year in data_dict[key][0]}
     
@@ -123,10 +156,10 @@ def yearly_wrapped(data_dict, year, write_year=None):
     top_songs = [(song, year_data[next(i for i in year_data if year_data[i][1] == song)][2], count) for song, count in song_counts.most_common(10)]
 
     # Write the results to a text file
-    write(data_dict, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, write_year)
+    write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, write_year)
 
 # Function to calculate Spotify Wrapped statistics for a specific month
-def monthly_wrapped(month, year, data_dict):
+def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
     # Filter the data for the specified month and year
     filtered_data = {key: data_dict[key] for key in data_dict if month in data_dict[key][0] and year in data_dict[key][0]}
     
@@ -157,30 +190,31 @@ def monthly_wrapped(month, year, data_dict):
     top_songs = [(song, month_data[next(i for i in month_data if month_data[i][1] == song)][2], count) for song, count in song_counts.most_common(10)]
     
     # Write the results to a text file
-    write(month_data, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
+    write(month_data, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
 
 # Function to wrap the monthly and yearly functions
 def wrapped(data_dict, first=None, second=None):
+    sorted_genre_counts = test_genre_finder(data_dict)
     # If only a year is given
     if first and first.isdigit() and second == None:
-        yearly_wrapped(data_dict, first, first)
+        yearly_wrapped(data_dict, sorted_genre_counts, first, first)
 
     # If only a month is given
     elif first and second == None:
-        monthly_wrapped(first, str(datetime.now().year), data_dict)
+        monthly_wrapped(first, str(datetime.now().year), data_dict, sorted_genre_counts)
     
     # If both a month and year are given
     elif first and not first.isdigit() and second and second.isdigit():
-        monthly_wrapped(first, second, data_dict)
+        monthly_wrapped(first, second, data_dict, sorted_genre_counts)
     elif first and first.isdigit() and second and not second.isdigit():
-        monthly_wrapped(second, first, data_dict)
+        monthly_wrapped(second, first, data_dict, sorted_genre_counts)
     
     # If neither a month nor year are given
     elif first == None and second == None:
-        yearly_wrapped(data_dict, str(datetime.now().year), str(datetime.now().year))
+        yearly_wrapped(data_dict, sorted_genre_counts, str(datetime.now().year), str(datetime.now().year))
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         for month in months:
-            monthly_wrapped(month, str(datetime.now().year), data_dict)
+            monthly_wrapped(month, str(datetime.now().year), data_dict, sorted_genre_counts)
     
     # If invalid arguments are given
     else:
@@ -206,45 +240,3 @@ def duration_check(data_dict):
     duration_ms = duration_ms // 60000
     
     return duration_ms
-
-# Cache to store artist genres
-artist_genre_cache = {}
-
-# Initialize Spotify client globally
-auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
-sp = spotipy.Spotify(auth_manager=auth_manager)
-
-async def fetch_artist_genre(session, artist_name):
-    if (artist_name in artist_genre_cache):
-        return artist_name, artist_genre_cache[artist_name]
-    
-    results = sp.search(q=f'artist:{artist_name}', type='artist', limit=1)
-    items = results['artists']['items']
-    if len(items) > 0:
-        artist = items[0]
-        genres = artist['genres']
-        artist_genre_cache[artist_name] = genres
-        return artist_name, genres
-    else:
-        artist_genre_cache[artist_name] = []
-        return artist_name, []
-
-async def get_artists_genres(artist_names):
-    async with aiohttp.ClientSession() as session:
-        tasks = [fetch_artist_genre(session, artist_name) for artist_name in artist_names]
-        results = await asyncio.gather(*tasks)
-        return dict(results)
-
-async def check_genres(data_dict):
-    all_artists = [data_dict[i][2] for i in data_dict]
-    artist_genres = await get_artists_genres(all_artists)
-    all_genres = []
-
-    for i in data_dict:
-        artist = data_dict[i][2]
-        genres = artist_genres.get(artist, [])
-        if genres:
-            all_genres.extend(genres)
-
-    genre_counts = Counter(all_genres)
-    return genre_counts.most_common(10)
