@@ -18,10 +18,11 @@ Tracks and analyzes your Spotify listening data and creates a custom Spotify Wra
 ## Getting Started
 ### Installation
 1. Make sure you have **[Python](https://www.python.org/downloads/)** installed
-2. Install both **[Requests](https://pypi.org/project/requests/)** and **[Spotipy](https://spotipy.readthedocs.io/en/2.24.0/)** by running the following in the command line:
+2. Install **[Requests](https://pypi.org/project/requests/)**, **[Spotipy](https://spotipy.readthedocs.io/en/2.24.0/)** and **[tqdm](https://github.com/tqdm/tqdm)** by running the following in the command line:
     ```
     $ pip install requests
     $ pip install spotipy
+    $ pip install tqdm
     ```
 3. **Google Sheet** connected to your **Spotify** account through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
 4. An active **[Spotify Developer account](https://developer.spotify.com/)**
@@ -58,6 +59,7 @@ Examples:
 ## Roadmap
 - [x] Add genre analysis
 - [x] Optimize genre calculations
+- [x] Add progress bars
 - [ ] Add heatmaps
 - [ ] Add playlist maker
 
