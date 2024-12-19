@@ -107,7 +107,7 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
             num += 1
         f.write('\n')
 
-        if type.isdigit():
+        if type == "Yearly":
             num = 1
             # Write the sorted genre counts
             f.write('\nTop genres:\n')
