@@ -1,7 +1,10 @@
-import sys, time
+import sys, time, os
 from spotify_utils import getGoogleSeet, load_csv_to_dict, wrapped
 from credentials import SPREADSHEET_ID
 from datetime import datetime
+
+# Clear the terminal
+os.system('cls' if os.name == 'nt' else 'clear')
 
 start_time = time.time()
 

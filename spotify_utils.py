@@ -3,6 +3,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 from credentials import CLIENT_ID, CLIENT_SECRET
+from tqdm import tqdm
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSeet(SPREADSHEET_ID, outDir, outFile):
@@ -33,6 +34,7 @@ def load_csv_to_dict(filepath):
     return data  # Return the populated dictionary
 
 def genre_finder(data_dict):
+    progress_bar = tqdm(total=100, desc="Calculating genre counts", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
     auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     sp = spotipy.Spotify(auth_manager=auth_manager)
     genres = []
@@ -52,6 +54,7 @@ def genre_finder(data_dict):
             artist = items[0]
             genres = artist['genres']
             artist_genres[i] = genres
+        progress_bar.update(100/len(unique_artists))
     
     # Create a dictionary to store genre counts
     genre_counts = defaultdict(int)
@@ -83,8 +86,11 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         f.write(f'Total listenings: {total_songs}\n')                   # Write the total number of listenings
         f.write(f'Unique songs: {len(unique_songs)}\n')                 # Write the number of unique songs
         f.write(f'Unique artists: {len(set(unique_artists))}\n')        # Write the number of unique artists
-        f.write(f'Total listening time: {duration_check(data_dict)} minutes\n\n')    # Write the total listening time in minutes
-        
+        if type == 'Yearly':
+            f.write(f'Total listening time: {duration_check(data_dict, 1)} minutes\n\n')    # Write the total listening time in minutes
+        else:
+            f.write(f'Total listening time: {duration_check(data_dict)} minutes\n\n')    # Write the total listening time in minutes
+
         # Write the top 10 artists
         f.write('Top 10 artists:\n')
         num = 1
@@ -158,7 +164,7 @@ def yearly_wrapped(data_dict, sorted_genre_counts, year, write_year=None):
     top_songs = [(song, year_data[next(i for i in year_data if year_data[i][1] == song)][2], count) for song, count in song_counts.most_common(10)]
 
     # Write the results to a text file
-    write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, write_year)
+    write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs,"Yearly", write_year)
 
 # Function to calculate Spotify Wrapped statistics for a specific month
 def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
@@ -215,15 +221,20 @@ def wrapped(data_dict, first=None, second=None):
     elif first == None and second == None:
         yearly_wrapped(data_dict, sorted_genre_counts, str(datetime.now().year), str(datetime.now().year))
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        progress_bar = tqdm(total=100, desc="Writing results to CSV file", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
         for month in months:
             monthly_wrapped(month, str(datetime.now().year), data_dict, sorted_genre_counts)
+            progress_bar.update(100/12)
     
     # If invalid arguments are given
     else:
         print('Invalid arguments')
         sys.exit(1)
 
-def duration_check(data_dict):
+def duration_check(data_dict, bool=0):
+    if bool:
+        progress_bar = tqdm(total=100, desc="Calculating total listening time", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
+    
     track_ids = [data_dict[i][3] for i in data_dict]
     auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     sp = spotipy.Spotify(auth_manager=auth_manager)
@@ -238,6 +249,8 @@ def duration_check(data_dict):
         
         for track_info in track_infos['tracks']:
             duration_ms += track_info.get('duration_ms', 0)
+        if bool:
+            progress_bar.update(100/len(chunks))
     
     duration_ms = duration_ms // 60000
     
