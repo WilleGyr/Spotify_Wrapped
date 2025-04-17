@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2025-04-17
+
+### Changed
+- Fixed a bug with tqdm, where an error would appear in the terminal. The listening time progress bars now take the actual amount of iterations into the calculation instead of defaulting to 100.
+
 ## [3.0.0] - 2025-04-17
 
 ### Added
