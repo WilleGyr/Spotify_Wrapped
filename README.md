@@ -60,6 +60,7 @@ Examples:
 - [x] Add genre analysis
 - [x] Optimize genre calculations
 - [x] Add progress bars
+- [x] Support multiple spreadsheets
 - [ ] Add heatmaps
 - [ ] Add playlist maker
 
