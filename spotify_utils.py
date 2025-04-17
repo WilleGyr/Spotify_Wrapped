@@ -260,15 +260,15 @@ def wrapped(data_dict, first=None, second=None):
         sys.exit(1)
 
 def duration_check(data_dict, bool=0):
-    if bool:
-        progress_bar = tqdm(total=100, desc="Calculating total listening time", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
-    
     track_ids = [data_dict[i][3] for i in data_dict]
     auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
     # Split track_ids into chunks of 50 (maximum allowed by Spotify API)
     chunks = [track_ids[i:i + 50] for i in range(0, len(track_ids), 50)]
+
+    if bool:
+        progress_bar = tqdm(total=len(chunks), desc="Calculating total listening time", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
     
     duration_ms = 0
     for chunk in chunks:
@@ -277,9 +277,13 @@ def duration_check(data_dict, bool=0):
         
         for track_info in track_infos['tracks']:
             duration_ms += track_info.get('duration_ms', 0)
+        
         if bool:
-            progress_bar.update(100/len(chunks))
-    
+            progress_bar.update(1)
+
+    if bool:
+        progress_bar.close()
+
     duration_ms = duration_ms // 60000
     
     return duration_ms
