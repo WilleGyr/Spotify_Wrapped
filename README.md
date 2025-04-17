@@ -2,7 +2,9 @@
 
 # Spotify Wrapped
 
-Tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
+This is a small project I'm working on a bit during my free time. It's my own version of Spotify's Wrapped feature, where I have complete control of the stats I want to see.
+
+It basically tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
 
 *The **[latest version](https://github.com/WilleGyr/Spotify_Wrapped/releases/latest)** requires a **[Spotify Developer account](https://developer.spotify.com/)**. If you don't have access to one, please download **[version 1.0.0](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v1.0.0)**. View the **[CHANGELOG](CHANGELOG)** for more information.
 
