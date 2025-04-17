@@ -1,7 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.2.0] - 2024-12-12
+## [3.0.0] - 2025-04-17
+
+### Added
+- Support for multiple spreadsheets, by passing a list of SPREADSHEET_ID's.
+
+## [2.0.0] - 2024-12-12
 
 ### Added
 - Functions that analyze finds the artist of each song listened to, find the artist's genres and then lists the top 10 most listened to genres.
