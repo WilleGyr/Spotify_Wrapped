@@ -19,7 +19,9 @@ It basically tracks and analyzes your Spotify listening data and creates a custo
 
 ## Getting Started
 ### Installation
-1. Make sure you have **[Python](https://www.python.org/downloads/)** installed
+1. Make sure you have **[Python 3.11.2](https://www.python.org/downloads/)** installed.<br>
+Compatibility with other versions is not guaranteed
+
 2. Install **[Requests](https://pypi.org/project/requests/)**, **[Spotipy](https://spotipy.readthedocs.io/en/2.24.0/)** and **[tqdm](https://github.com/tqdm/tqdm)** by running the following in the command line:
     ```
     $ pip install requests
