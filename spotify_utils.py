@@ -4,25 +4,45 @@ from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 from credentials import CLIENT_ID, CLIENT_SECRET
 from tqdm import tqdm
+import os
+import sys
+import requests
+import csv
 
 # Function to download a Google Sheet as a CSV file
-def getGoogleSeet(SPREADSHEET_ID, outDir, outFile):
-    # Construct the URL to export the Google Sheet as a CSV file
-    url = f'https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/export?format=csv'
-    response = requests.get(url)  # Send a GET request to the URL
+def getGoogleSheets(spreadsheet_ids, outDir, outFile):
+    if outDir:
+        os.makedirs(outDir, exist_ok=True)
     
-    if response.status_code == 200:
-        # If the request is successful, construct the file path
-        filepath = os.path.join(outDir, outFile)
-        # Open the file in write-binary mode and save the content
-        with open(filepath, 'wb') as f:
-            f.write(response.content)
-            print('CSV file saved to: {}'.format(filepath))
-        return filepath  # Return the file path
-    else:
-        # If the request fails, print an error message and exit
-        print(f'Error downloading Google Sheet: {response.status_code}')
-        sys.exit(1)
+    filepath = os.path.join(outDir, outFile) if outDir else outFile
+    
+    with open(filepath, 'w', newline='', encoding='utf-8') as outfile:
+        writer = None
+        
+        for i, SPREADSHEET_ID in enumerate(spreadsheet_ids):
+            url = f'https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/export?format=csv'
+            response = requests.get(url)
+            
+            if response.status_code == 200:
+                content = response.content.decode('utf-8')
+                reader = csv.reader(content.splitlines())
+                
+                header = next(reader)
+                
+                if writer is None:
+                    writer = csv.writer(outfile)
+                    writer.writerow(header)
+
+                for row in reader:
+                    writer.writerow(row)
+
+                print(f'Successfully added data from spreadsheet {i+1}/{len(spreadsheet_ids)}')
+            else:
+                print(f'Error downloading Google Sheet with ID {SPREADSHEET_ID}: {response.status_code}')
+                sys.exit(1)
+    
+    print('All sheets combined and saved to: {}'.format(filepath))
+    return filepath
 
 # Function to load a CSV file into a dictionary
 def load_csv_to_dict(filepath):
@@ -83,11 +103,14 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
             f.write(f'----- {type} {year} -----\n\nStats:\n')
         
         # Write stats
-        f.write(f'Total listenings: {total_songs}\n')                   # Write the total number of listenings
-        f.write(f'Unique songs: {len(unique_songs)}\n')                 # Write the number of unique songs
+        f.write(f"Total listenings: {'{:,.0f}'.format(total_songs).replace(',', ' ')}\n")       # Write the total number of listenings
+        f.write(f"Unique songs: {'{:,.0f}'.format(len(unique_songs)).replace(',', ' ')}\n")     # Write the number of unique songs
         f.write(f'Unique artists: {len(set(unique_artists))}\n')        # Write the number of unique artists
         if type == 'Yearly':
-            f.write(f'Total listening time: {duration_check(data_dict, 1)} minutes\n\n')    # Write the total listening time in minutes
+            f.write(f"Total listening time: {'{:,.0f}'.format(duration_check(data_dict, 1)).replace(',', ' ')} minutes\n\n")    # Write the total listening time in minutes
+            # I want to store the days since the beginning of the year
+            days = datetime.now().timetuple().tm_yday
+            print(f"Predicted total listening time: {'{:,.0f}'.format(round(duration_check(data_dict, 1) / days * 365)).replace(',', ' ')} minutes")
         else:
             f.write(f'Total listening time: {duration_check(data_dict)} minutes\n\n')    # Write the total listening time in minutes
 
@@ -108,13 +131,14 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         f.write('\n')
 
         if type == "Yearly":
-            num = 1
-            # Write the sorted genre counts
-            f.write('\nTop genres:\n')
-            for genre, count in list(sorted_genre_counts.items())[:10]:
-                f.write(f'{num}. {genre}: {count}\n')
-                num += 1
-            f.write('\n')
+            if sorted_genre_counts:
+                num = 1
+                # Write the sorted genre counts
+                f.write('\nTop genres:\n')
+                for genre, count in list(sorted_genre_counts.items())[:10]:
+                    f.write(f'{num}. {genre}: {count}\n')
+                    num += 1
+                f.write('\n')
         f.write('\n')
 
 # Function to find duplicate songs in the data dictionary
@@ -202,7 +226,11 @@ def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
 
 # Function to wrap the monthly and yearly functions
 def wrapped(data_dict, first=None, second=None):
-    sorted_genre_counts = genre_finder(data_dict)
+    check_genres = input("Do you want to see the top genres? (write anything for yes): ")
+    if check_genres.lower() != '':
+        sorted_genre_counts = genre_finder(data_dict)
+    else:
+        sorted_genre_counts = None
     # If only a year is given
     if first and first.isdigit() and second == None:
         yearly_wrapped(data_dict, sorted_genre_counts, first, first)
@@ -221,7 +249,7 @@ def wrapped(data_dict, first=None, second=None):
     elif first == None and second == None:
         yearly_wrapped(data_dict, sorted_genre_counts, str(datetime.now().year), str(datetime.now().year))
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        progress_bar = tqdm(total=100, desc="Writing results to CSV file", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
+        progress_bar = tqdm(total=100, desc="Writing results to .txt file", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
         for month in months:
             monthly_wrapped(month, str(datetime.now().year), data_dict, sorted_genre_counts)
             progress_bar.update(100/12)
