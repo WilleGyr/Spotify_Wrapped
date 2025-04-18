@@ -92,6 +92,18 @@ def genre_finder(data_dict):
     
     return sorted_genre_counts
 
+def calculate_monthly_listening(data_dict):
+    monthly_counts = defaultdict(int)
+    for row in data_dict.values():
+        if len(row) >= 1:
+            date_str = row[0].strip().strip('"')  # Första fältet är datumet
+            try:
+                dt = datetime.strptime(date_str, "%B %d, %Y at %I:%M%p")
+                monthly_counts[dt.month] += 1
+            except ValueError:
+                pass  # Hoppa över felaktiga datum
+    return monthly_counts
+
 def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
 # Skapa en mapp där vi sparar bilderna om du vill
     os.makedirs('Spotify_Wrapped_Charts', exist_ok=True)
@@ -146,6 +158,23 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         plt.xlabel('Listenings')
         plt.tight_layout()
         plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_genres.png')
+        plt.close()
+
+    if type == 'Yearly':
+        monthly_listening = calculate_monthly_listening(data_dict)
+
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        counts = [monthly_listening.get(i, 0) for i in range(1, 13)]
+
+        plt.figure(figsize=(12,6))
+        plt.plot(months, counts, marker='o')  # Linjegraf
+        plt.title(f"Listening Activity per Month - {year}")
+        plt.xlabel('Month')
+        plt.ylabel('Listenings')
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_listening_per_month.png')
         plt.close()
 
 # Function to write Spotify statistics to a text file
