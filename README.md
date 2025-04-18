@@ -4,7 +4,7 @@
 
 > ⚠️ **Notice**:  
 > This is the README for **version 4.0.1-beta** (major update with charts instead of text output).  
-> If you want the latest stable release, please download **v3.0.1** from the [Releases page](https://github.com/yourname/yourrepo/releases).
+> If you want the latest stable release, please download **v3.0.1** from the [Releases page](https://github.com/yourname/yourrepo/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
 
 # Spotify Wrapped
 
