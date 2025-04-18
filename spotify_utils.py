@@ -4,11 +4,10 @@ from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
 from credentials import CLIENT_ID, CLIENT_SECRET
 from tqdm import tqdm
-import os
-import sys
-import requests
-import csv
 import matplotlib.pyplot as plt
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from io import BytesIO
+from PIL import Image
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSheets(spreadsheet_ids, outDir, outFile):
@@ -53,6 +52,26 @@ def load_csv_to_dict(filepath):
         for i, row in enumerate(csv_reader):
             data[i] = row  # Add each row to the dictionary with the index as the key
     return data  # Return the populated dictionary
+
+def fetch_artist_image(sp, artist_name):
+    try:
+        results = sp.search(q=f'artist:{artist_name}', type='artist', limit=1)
+        items = results['artists']['items']
+        if items and items[0]['images']:
+            return items[0]['images'][0]['url']  # Get the first (largest) image
+    except Exception as e:
+        print(f"Error fetching image for artist {artist_name}: {e}")
+    return None
+
+def fetch_song_image(sp, song_name, artist_name):
+    try:
+        results = sp.search(q=f'track:{song_name} artist:{artist_name}', type='track', limit=1)
+        items = results['tracks']['items']
+        if items and items[0]['album']['images']:
+            return items[0]['album']['images'][0]['url']
+    except Exception:
+        pass
+    return None
 
 def genre_finder(data_dict):
     progress_bar = tqdm(total=100, desc="Calculating genre counts", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
@@ -105,10 +124,18 @@ def calculate_monthly_listening(data_dict):
     return monthly_counts
 
 def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
-# Skapa en mapp där vi sparar bilderna om du vill
     os.makedirs('Spotify_Wrapped_Charts', exist_ok=True)
 
-    # --- Grundläggande statistik ---
+    auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
+    # --- Basic Statistics ---
+    fig, ax = plt.subplots(figsize=(10,6))
+    fig.patch.set_facecolor('#121212')
+    ax.set_facecolor('#121212')
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
     stats_labels = ['Total Listenings', 'Unique Songs', 'Unique Artists', 'Total Listening Time (minutes)']
     stats_values = [
         total_songs,
@@ -117,65 +144,150 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         listening_time if type != 'Yearly' else duration_check(data_dict, 1)
     ]
 
-    plt.figure(figsize=(10,6))
-    plt.bar(stats_labels, stats_values)
+    ax.bar(stats_labels, stats_values, color='#1DB954')
+    for i, v in enumerate(stats_values):
+        ax.text(i, v + max(stats_values)*0.01, str(v), ha='center', va='bottom', fontsize=9, color='white')
+
+    ax.set_ylabel('Amount', color='white')
+    ax.tick_params(axis='x', colors='white')
+    ax.tick_params(axis='y', colors='white')
+    ax.title.set_color('white')
     plt.title(f"Spotify {type} Stats {year}")
-    plt.ylabel('Amount')
     plt.xticks(rotation=20)
+    plt.grid(axis='y', color='gray', linestyle='--', alpha=0.3)
     plt.tight_layout()
-    plt.savefig(f'Spotify_Wrapped_Charts/{type}_basic_stats.png')
+    plt.savefig(f'Spotify_Wrapped_Charts/{type}_basic_stats.png', facecolor=fig.get_facecolor())
     plt.close()
 
     # --- Top 10 Artists ---
     if top_artists:
         artists, counts = zip(*top_artists)
-        plt.figure(figsize=(10,6))
-        plt.barh(artists[::-1], counts[::-1])
-        plt.title(f"Top 10 Artists - {type} {year}")
+        fig, ax = plt.subplots(figsize=(12,7))
+        fig.patch.set_facecolor('#121212')
+        ax.set_facecolor('#121212')
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+        y_positions = range(len(artists))[::-1]
+        ax.barh(y_positions, counts[::-1], color='#1DB954')
+        ax.set_yticks([])
+
+        for i, artist in enumerate(artists[::-1]):
+            y = y_positions[i]
+            ax.text(-max(counts)*0.02, y, artist, va='center', ha='right', fontsize=11, color='white')
+
+            img_url = fetch_artist_image(sp, artist)
+            if img_url:
+                response = requests.get(img_url)
+                img = Image.open(BytesIO(response.content))
+                imagebox = OffsetImage(img, zoom=0.05)
+                ab = AnnotationBbox(imagebox, (-max(counts)*0.015, y), frameon=False, box_alignment=(0,0.5))
+                ax.add_artist(ab)
+
+        for i, v in enumerate(counts[::-1]):
+            ax.text(v + max(counts)*0.01, y_positions[i], str(v), va='center', fontsize=9, color='white')
+
+        ax.set_xlim(-max(counts)*0.2, max(counts)*1.2)
+        ax.xaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
         plt.xlabel('Listenings')
+        plt.title(f"Top 10 Artists - {type} {year}", color='white')
+        plt.grid(axis='x', color='gray', linestyle='--', alpha=0.3)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_artists.png')
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_artists_with_images.png', facecolor=fig.get_facecolor())
         plt.close()
 
     # --- Top 10 Songs ---
     if top_songs:
         songs = [f"{song} ({artist})" for song, artist, count in top_songs]
         counts = [count for song, artist, count in top_songs]
-        plt.figure(figsize=(10,6))
-        plt.barh(songs[::-1], counts[::-1])
-        plt.title(f"Top 10 Songs - {type} {year}")
+        fig, ax = plt.subplots(figsize=(12,7))
+        fig.patch.set_facecolor('#121212')
+        ax.set_facecolor('#121212')
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+        y_positions = range(len(songs))[::-1]
+        ax.barh(y_positions, counts[::-1], color='#1DB954')
+        ax.set_yticks([])
+
+        for i, (song_artist, (song_name, artist_name, _)) in enumerate(zip(songs[::-1], top_songs[::-1])):
+            y = y_positions[i]
+            ax.text(-max(counts)*0.02, y, song_artist, va='center', ha='right', fontsize=9, color='white')
+
+            img_url = fetch_song_image(sp, song_name, artist_name)
+            if img_url:
+                response = requests.get(img_url)
+                img = Image.open(BytesIO(response.content))
+                imagebox = OffsetImage(img, zoom=0.05)
+                ab = AnnotationBbox(imagebox, (-max(counts)*0.015, y), frameon=False, box_alignment=(0,0.5))
+                ax.add_artist(ab)
+
+        for i, v in enumerate(counts[::-1]):
+            ax.text(v + max(counts)*0.01, y_positions[i], str(v), va='center', fontsize=9, color='white')
+
+        ax.set_xlim(-max(counts)*0.2, max(counts)*1.2)
+        ax.xaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
         plt.xlabel('Listenings')
+        plt.title(f"Top 10 Songs - {type} {year}", color='white')
+        plt.grid(axis='x', color='gray', linestyle='--', alpha=0.3)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_songs.png')
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_songs_with_images.png', facecolor=fig.get_facecolor())
         plt.close()
 
-    # --- Top Genres (om Yearly) ---
+    # --- Top Genres (if Yearly) ---
     if type == 'Yearly' and sorted_genre_counts:
         genres, counts = zip(*list(sorted_genre_counts.items())[:10])
-        plt.figure(figsize=(10,6))
-        plt.barh(genres[::-1], counts[::-1])
-        plt.title(f"Top Genres - {year}")
+        fig, ax = plt.subplots(figsize=(10,6))
+        fig.patch.set_facecolor('#121212')
+        ax.set_facecolor('#121212')
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+        y_positions = range(len(genres))[::-1]
+        ax.barh(y_positions, counts[::-1], color='#1DB954')
+        ax.set_yticks(y_positions)
+        ax.set_yticklabels(genres[::-1], color='white')
+
+        for i, v in enumerate(counts[::-1]):
+            ax.text(v + max(counts)*0.01, y_positions[i], str(v), va='center', fontsize=9, color='white')
+
+        ax.xaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
         plt.xlabel('Listenings')
+        plt.title(f"Top Genres - {year}", color='white')
+        plt.grid(axis='x', color='gray', linestyle='--', alpha=0.3)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_genres.png')
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_genres.png', facecolor=fig.get_facecolor())
         plt.close()
 
+    # --- Listening Activity per Month (if Yearly) ---
     if type == 'Yearly':
         monthly_listening = calculate_monthly_listening(data_dict)
-
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         counts = [monthly_listening.get(i, 0) for i in range(1, 13)]
 
-        plt.figure(figsize=(12,6))
-        plt.plot(months, counts, marker='o')  # Linjegraf
-        plt.title(f"Listening Activity per Month - {year}")
-        plt.xlabel('Month')
-        plt.ylabel('Listenings')
-        plt.grid(True)
+        fig, ax = plt.subplots(figsize=(12,6))
+        fig.patch.set_facecolor('#121212')
+        ax.set_facecolor('#121212')
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+        ax.plot(months, counts, marker='o', color='white')
+        for i, v in enumerate(counts):
+            ax.text(i, v + max(counts)*0.02, str(v), ha='center', va='bottom', fontsize=9, color='white')
+
+        ax.set_xlabel('Month', color='white')
+        ax.set_ylabel('Listenings', color='white')
+        ax.tick_params(axis='both', colors='white')
+        plt.title(f"Listening Activity per Month - {year}", color='white')
+        plt.grid(True, color='gray', linestyle='--', alpha=0.3)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_listening_per_month.png')
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_listening_per_month.png', facecolor=fig.get_facecolor())
         plt.close()
+
 
 # Function to write Spotify statistics to a text file
 def write_to_txt(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
