@@ -8,6 +8,7 @@ import os
 import sys
 import requests
 import csv
+import matplotlib.pyplot as plt
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSheets(spreadsheet_ids, outDir, outFile):
@@ -91,8 +92,64 @@ def genre_finder(data_dict):
     
     return sorted_genre_counts
 
-# Function to write Spotify statistics to a text file
 def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
+# Skapa en mapp där vi sparar bilderna om du vill
+    os.makedirs('Spotify_Wrapped_Charts', exist_ok=True)
+
+    # --- Grundläggande statistik ---
+    stats_labels = ['Total Listenings', 'Unique Songs', 'Unique Artists', 'Total Listening Time (minutes)']
+    stats_values = [
+        total_songs,
+        len(unique_songs),
+        len(set(unique_artists)),
+        listening_time if type != 'Yearly' else duration_check(data_dict, 1)
+    ]
+
+    plt.figure(figsize=(10,6))
+    plt.bar(stats_labels, stats_values)
+    plt.title(f"Spotify {type} Stats {year}")
+    plt.ylabel('Amount')
+    plt.xticks(rotation=20)
+    plt.tight_layout()
+    plt.savefig(f'Spotify_Wrapped_Charts/{type}_basic_stats.png')
+    plt.close()
+
+    # --- Top 10 Artists ---
+    if top_artists:
+        artists, counts = zip(*top_artists)
+        plt.figure(figsize=(10,6))
+        plt.barh(artists[::-1], counts[::-1])
+        plt.title(f"Top 10 Artists - {type} {year}")
+        plt.xlabel('Listenings')
+        plt.tight_layout()
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_artists.png')
+        plt.close()
+
+    # --- Top 10 Songs ---
+    if top_songs:
+        songs = [f"{song} ({artist})" for song, artist, count in top_songs]
+        counts = [count for song, artist, count in top_songs]
+        plt.figure(figsize=(10,6))
+        plt.barh(songs[::-1], counts[::-1])
+        plt.title(f"Top 10 Songs - {type} {year}")
+        plt.xlabel('Listenings')
+        plt.tight_layout()
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_songs.png')
+        plt.close()
+
+    # --- Top Genres (om Yearly) ---
+    if type == 'Yearly' and sorted_genre_counts:
+        genres, counts = zip(*list(sorted_genre_counts.items())[:10])
+        plt.figure(figsize=(10,6))
+        plt.barh(genres[::-1], counts[::-1])
+        plt.title(f"Top Genres - {year}")
+        plt.xlabel('Listenings')
+        plt.tight_layout()
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_genres.png')
+        plt.close()
+
+# Function to write Spotify statistics to a text file
+def write_to_txt(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
     with open('Spotify_Wrapped.txt', 'a', encoding='utf-8') as f:
         # Write the header based on the type of specification
         if type == 'Yearly':
