@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [4.0.1-beta] - 2025-04-18
+
+### Added
+- Graph for listenings per month for the whole year.
+
 ## [4.0.0-beta] - 2025-04-18
 
 ### Added
