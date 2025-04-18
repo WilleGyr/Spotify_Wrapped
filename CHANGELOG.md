@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [4.0.0] - 2025-04-18
+
+### Added
+- Writes the data into diagrams instead of a txt-file.
+
 ## [3.0.1] - 2025-04-17
 
 ### Changed

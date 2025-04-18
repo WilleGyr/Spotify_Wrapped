@@ -22,11 +22,12 @@ It basically tracks and analyzes your Spotify listening data and creates a custo
 1. Make sure you have **[Python 3.11.2](https://www.python.org/downloads/)** installed.<br>
 Compatibility with other versions is not guaranteed
 
-2. Install **[Requests](https://pypi.org/project/requests/)**, **[Spotipy](https://spotipy.readthedocs.io/en/2.24.0/)** and **[tqdm](https://github.com/tqdm/tqdm)** by running the following in the command line:
+2. Install **[Requests](https://pypi.org/project/requests/)**, **[Spotipy](https://spotipy.readthedocs.io/en/2.24.0/)**, **[tqdm](https://github.com/tqdm/tqdm)** and **[matplotlib](https://matplotlib.org/)** by running the following in the command line:
     ```
     $ pip install requests
     $ pip install spotipy
     $ pip install tqdm
+    $ pip install matplotlib
     ```
 3. **Google Sheet** connected to your **Spotify** account through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
 4. An active **[Spotify Developer account](https://developer.spotify.com/)**
