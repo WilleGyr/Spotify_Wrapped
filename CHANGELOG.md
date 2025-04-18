@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [5.0.0-beta] - 2025-04-18
+
+### Added
+- Added artist and album cover images to graphs.
+
+## [4.0.1] - 2025-04-18
+
+### Comments
+- Ready for release
+
 ## [4.0.1-beta] - 2025-04-18
 
 ### Added
