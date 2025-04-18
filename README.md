@@ -1,4 +1,5 @@
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) ![GitHub Release](https://img.shields.io/github/v/release/WilleGyr/Spotify_Wrapped)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) ![GitHub Release](https://img.shields.io/github/v/release/WilleGyr/Spotify_Wrapped?link=https%3A%2F%2Fgithub.com%2FWilleGyr%2FSpotify_Wrapped%2Freleases%2Ftag%2Fv3.0.1)
+
 
 > ⚠️ **Notice**:  
 > This is the README for **version 4.0.0-beta** (major update with charts instead of text output).  
