@@ -1,5 +1,9 @@
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/)
 
+> ⚠️ **Notice**:  
+> This is the README for **version 4.0.0-beta** (major update with charts instead of text output).  
+> If you want the latest stable release, please download **v3.0.1** from the [Releases page](https://github.com/yourname/yourrepo/releases).
+
 # Spotify Wrapped
 
 This is a small project I'm working on a bit during my free time. It's my own version of Spotify's Wrapped feature, where I have complete control of the stats I want to see.
