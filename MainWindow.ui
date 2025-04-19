@@ -48,7 +48,7 @@ QTabBar::tab:selected {
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -126,6 +126,37 @@ QTabBar::tab:selected {
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="Vis_MonthDropDown">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>100</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#1DB954</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Whole Year</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="Vis_TypeDropDown">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>150</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:#1DB954</string>
       </property>
      </widget>
     </widget>

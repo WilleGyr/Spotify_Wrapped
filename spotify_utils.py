@@ -530,23 +530,117 @@ def OnGenerateButtonClicked(window):
     print("Generation complete!")
 
 def update_image_label(window):
-    directory = 'Spotify_Wrapped_Charts'
+    window.ImageLabel.setStyleSheet("""
+    QLabel {
+        background-color: #121212;
+        border: 2px solid #1DB954;
+        border-radius: 10px;
+        padding: 5px;
+        color: white;
+        font-size: 16px;
+        qproperty-alignment: AlignCenter;
+    }
+    """)
 
+    directory = 'Spotify_Wrapped_Charts'
     if not os.path.exists(directory):
         window.ImageLabel.setText("Directory does not exist")
         return
 
-    # Get all files (filter to only images if needed)
-    image_files = [f for f in os.listdir(directory) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    selected_month = window.Vis_MonthDropDown.currentText()
+    selected_type = window.Vis_TypeDropDown.currentText()
 
-    if image_files:
-        first_image_path = os.path.join(directory, image_files[0])
-        pixmap = QPixmap(first_image_path)
-        window.ImageLabel.setPixmap(pixmap)
-        window.ImageLabel.setScaledContents(True)  # Scale image nicely inside the label
+    type_suffixes = {
+        'Basic Stats': 'basic_stats',
+        'Top Artists': 'top_artists_with_images',
+        'Top Songs': 'top_songs_with_images',
+        'Per Month': 'listening_per_month'
+    }
+
+    type_suffix = type_suffixes.get(selected_type, '')
+
+    # If 'Whole Year' selected, use 'Yearly' instead of month
+    if selected_month.lower() == 'whole year':
+        month_part = 'yearly'
     else:
-        window.ImageLabel.setText("Directory empty")
+        month_part = selected_month.lower()
+
+    image_files = [f for f in os.listdir(directory) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    found_file = None
+
+    for file in image_files:
+        file_lower = file.lower()
+        if month_part in file_lower and type_suffix in file_lower:
+            found_file = file
+            break
+
+    if found_file:
+        image_path = os.path.join(directory, found_file)
+        pixmap = QPixmap(image_path)
+        window.ImageLabel.setPixmap(pixmap)
+        window.ImageLabel.setScaledContents(True)
+    else:
+        window.ImageLabel.setText(f"No image found for {selected_month} - {selected_type}")
+
 
 def on_tab_changed(index, window):
     if index == 1:  # If it's the first tab (Visuals tab)
         update_image_label(window)
+
+def update_month_dropdown(window):
+    window.Vis_MonthDropDown.clear()
+
+    directory = 'Spotify_Wrapped_Charts'
+    if not os.path.exists(directory):
+        return
+
+    files = [f for f in os.listdir(directory) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+
+    month_names = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ]
+
+    valid_months = set()
+
+    for month in month_names:
+        # Find all files containing this month
+        month_files = [f for f in files if month.lower() in f.lower()]
+        
+        if not month_files:
+            continue  # No files at all for this month
+
+        # Check if there are files besides Basic Stats
+        has_other_types = False
+        for f in month_files:
+            if not 'basic_stats' in f.lower():
+                has_other_types = True
+                break
+        
+        if has_other_types:
+            valid_months.add(month)
+
+    # Also check if Whole Year has more than just Basic Stats
+    year_files = [f for f in files if 'yearly' in f.lower()]
+    has_other_types_year = False
+    for f in year_files:
+        if not 'basic_stats' in f.lower():
+            has_other_types_year = True
+            break
+
+    if has_other_types_year:
+        window.Vis_MonthDropDown.addItem("Whole Year")
+
+    for month in month_names:
+        if month in valid_months:
+            window.Vis_MonthDropDown.addItem(month)
+
+def update_type_dropdown(window):
+    window.Vis_TypeDropDown.clear()
+    window.Vis_TypeDropDown.addItems(["Basic Stats", "Top Artists", "Top Songs"])
+    if window.Vis_MonthDropDown.currentText() == "Whole Year":
+        window.Vis_TypeDropDown.addItems(["Per Month"])
+
+def on_dropdown_changed(window):
+    update_type_dropdown(window)  # (if you want types to change based on month)
+    update_image_label(window)     # always update the image
