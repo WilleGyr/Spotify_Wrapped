@@ -48,7 +48,7 @@ QTabBar::tab:selected {
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -133,30 +133,106 @@ QTabBar::tab:selected {
        <rect>
         <x>1120</x>
         <y>100</y>
-        <width>111</width>
+        <width>130</width>
         <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:#1DB954</string>
+       <string notr="true">QComboBox {
+    background-color: #121212;
+    border: 2px solid #1DB954;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: white;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+}
+
+QComboBox::drop-down {
+    border: 0px;
+}
+
+QComboBox::down-arrow {
+    image: url(down_arrow_white.png); /* optional: custom arrow icon */
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #181818;
+    border: 1px solid #1DB954;
+    selection-background-color: #1DB954;
+    selection-color: black;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+}</string>
       </property>
-      <item>
-       <property name="text">
-        <string>Whole Year</string>
-       </property>
-      </item>
      </widget>
      <widget class="QComboBox" name="Vis_TypeDropDown">
       <property name="geometry">
        <rect>
         <x>1120</x>
         <y>150</y>
-        <width>111</width>
+        <width>130</width>
         <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:#1DB954</string>
+       <string notr="true">QComboBox {
+    background-color: #121212;
+    border: 2px solid #1DB954;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: white;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+}
+
+QComboBox::drop-down {
+    border: 0px;
+}
+
+QComboBox::down-arrow {
+    image: url(down_arrow_white.png); /* optional: custom arrow icon */
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #181818;
+    border: 1px solid #1DB954;
+    selection-background-color: #1DB954;
+    selection-color: black;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>-10</y>
+        <width>130</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    color: #1DB954;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    background-color: transparent;
+    border-bottom: 2px solid #1DB954;
+	padding-bottom: 5px;
+    qproperty-alignment: AlignCenter;
+}</string>
+      </property>
+      <property name="text">
+       <string>Filters</string>
       </property>
      </widget>
     </widget>

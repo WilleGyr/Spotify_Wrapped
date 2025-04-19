@@ -9,6 +9,8 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from io import BytesIO
 from PIL import Image
 from PyQt5.QtGui import QPixmap
+import matplotlib as mpl
+import matplotlib.pyplot as plt  # Make sure this is also imported!
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSheets(spreadsheet_ids, outDir, outFile):
@@ -125,13 +127,14 @@ def calculate_monthly_listening(data_dict):
     return monthly_counts
 
 def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
+    mpl.rcParams['text.antialiased'] = True
     os.makedirs('Spotify_Wrapped_Charts', exist_ok=True)
 
     auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
     # --- Basic Statistics ---
-    fig, ax = plt.subplots(figsize=(10,6))
+    fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=100)
     fig.patch.set_facecolor('#121212')
     ax.set_facecolor('#121212')
     for spine in ax.spines.values():
@@ -150,30 +153,31 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         ax.text(i, v + max(stats_values)*0.01, str(v), ha='center', va='bottom', fontsize=9, color='white')
 
     ax.set_ylabel('Amount', color='white')
-    ax.tick_params(axis='x', colors='white')
+    #ax.tick_params(axis='x', colors='white')
+    ax.tick_params(axis='x', bottom=False, labelbottom=False)
     ax.tick_params(axis='y', colors='white')
     ax.title.set_color('white')
     plt.title(f"Spotify {type} Stats {year}")
     plt.xticks(rotation=20)
-    plt.grid(axis='y', color='gray', linestyle='--', alpha=0.3)
+    ax.grid(False)
     plt.tight_layout()
-    plt.savefig(f'Spotify_Wrapped_Charts/{type}_basic_stats.png', facecolor=fig.get_facecolor())
+    plt.savefig(f'Spotify_Wrapped_Charts/{type}_basic_stats.png', dpi=300, facecolor=fig.get_facecolor())
     plt.close()
 
     # --- Top 10 Artists ---
     if top_artists:
         artists, counts = zip(*top_artists)
-        fig, ax = plt.subplots(figsize=(12,7))
+        fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=100)
         fig.patch.set_facecolor('#121212')
         ax.set_facecolor('#121212')
         for spine in ax.spines.values():
             spine.set_visible(False)
 
         y_positions = range(len(artists))[::-1]
-        ax.barh(y_positions, counts[::-1], color='#1DB954')
+        ax.barh(y_positions, counts[::1], color='#1DB954')
         ax.set_yticks([])
 
-        for i, artist in enumerate(artists[::-1]):
+        for i, artist in enumerate(artists[::1]):
             y = y_positions[i]
             ax.text(-max(counts)*0.02, y, artist, va='center', ha='right', fontsize=11, color='white')
 
@@ -185,34 +189,35 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
                 ab = AnnotationBbox(imagebox, (-max(counts)*0.015, y), frameon=False, box_alignment=(0,0.5))
                 ax.add_artist(ab)
 
-        for i, v in enumerate(counts[::-1]):
+        for i, v in enumerate(counts[::1]):
             ax.text(v + max(counts)*0.01, y_positions[i], str(v), va='center', fontsize=9, color='white')
 
         ax.set_xlim(-max(counts)*0.2, max(counts)*1.2)
         ax.xaxis.label.set_color('white')
-        ax.tick_params(axis='x', colors='white')
+        #ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='x', bottom=False, labelbottom=False)
         plt.xlabel('Listenings')
         plt.title(f"Top 10 Artists - {type} {year}", color='white')
-        plt.grid(axis='x', color='gray', linestyle='--', alpha=0.3)
+        ax.grid(False)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_artists_with_images.png', facecolor=fig.get_facecolor())
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_artists_with_images.png', dpi=300, facecolor=fig.get_facecolor())
         plt.close()
 
     # --- Top 10 Songs ---
     if top_songs:
         songs = [f"{song} ({artist})" for song, artist, count in top_songs]
         counts = [count for song, artist, count in top_songs]
-        fig, ax = plt.subplots(figsize=(12,7))
+        fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=100)
         fig.patch.set_facecolor('#121212')
         ax.set_facecolor('#121212')
         for spine in ax.spines.values():
             spine.set_visible(False)
 
         y_positions = range(len(songs))[::-1]
-        ax.barh(y_positions, counts[::-1], color='#1DB954')
+        ax.barh(y_positions, counts[::1], color='#1DB954')
         ax.set_yticks([])
 
-        for i, (song_artist, (song_name, artist_name, _)) in enumerate(zip(songs[::-1], top_songs[::-1])):
+        for i, (song_artist, (song_name, artist_name, _)) in enumerate(zip(songs[::1], top_songs[::1])):
             y = y_positions[i]
             ax.text(-max(counts)*0.02, y, song_artist, va='center', ha='right', fontsize=9, color='white')
 
@@ -224,43 +229,45 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
                 ab = AnnotationBbox(imagebox, (-max(counts)*0.015, y), frameon=False, box_alignment=(0,0.5))
                 ax.add_artist(ab)
 
-        for i, v in enumerate(counts[::-1]):
+        for i, v in enumerate(counts[::1]):
             ax.text(v + max(counts)*0.01, y_positions[i], str(v), va='center', fontsize=9, color='white')
 
         ax.set_xlim(-max(counts)*0.2, max(counts)*1.2)
         ax.xaxis.label.set_color('white')
-        ax.tick_params(axis='x', colors='white')
+        #ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='x', bottom=False, labelbottom=False)
         plt.xlabel('Listenings')
         plt.title(f"Top 10 Songs - {type} {year}", color='white')
-        plt.grid(axis='x', color='gray', linestyle='--', alpha=0.3)
+        ax.grid(False)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_songs_with_images.png', facecolor=fig.get_facecolor())
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_songs_with_images.png', dpi=300, facecolor=fig.get_facecolor())
         plt.close()
 
     # --- Top Genres (if Yearly) ---
     if type == 'Yearly' and sorted_genre_counts:
         genres, counts = zip(*list(sorted_genre_counts.items())[:10])
-        fig, ax = plt.subplots(figsize=(10,6))
+        fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=100)
         fig.patch.set_facecolor('#121212')
         ax.set_facecolor('#121212')
         for spine in ax.spines.values():
             spine.set_visible(False)
 
-        y_positions = range(len(genres))[::-1]
-        ax.barh(y_positions, counts[::-1], color='#1DB954')
+        y_positions = range(len(genres))[::1]
+        ax.barh(y_positions, counts[::1], color='#1DB954')
         ax.set_yticks(y_positions)
-        ax.set_yticklabels(genres[::-1], color='white')
+        ax.set_yticklabels(genres[::1], color='white')
 
-        for i, v in enumerate(counts[::-1]):
+        for i, v in enumerate(counts[::1]):
             ax.text(v + max(counts)*0.01, y_positions[i], str(v), va='center', fontsize=9, color='white')
 
         ax.xaxis.label.set_color('white')
-        ax.tick_params(axis='x', colors='white')
+        #ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='x', bottom=False, labelbottom=False)
         plt.xlabel('Listenings')
         plt.title(f"Top Genres - {year}", color='white')
-        plt.grid(axis='x', color='gray', linestyle='--', alpha=0.3)
+        ax.grid(False)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_genres.png', facecolor=fig.get_facecolor())
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_top_genres.png', dpi=300, facecolor=fig.get_facecolor())
         plt.close()
 
     # --- Listening Activity per Month (if Yearly) ---
@@ -270,7 +277,7 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         counts = [monthly_listening.get(i, 0) for i in range(1, 13)]
 
-        fig, ax = plt.subplots(figsize=(12,6))
+        fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=100)
         fig.patch.set_facecolor('#121212')
         ax.set_facecolor('#121212')
         for spine in ax.spines.values():
@@ -284,9 +291,9 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         ax.set_ylabel('Listenings', color='white')
         ax.tick_params(axis='both', colors='white')
         plt.title(f"Listening Activity per Month - {year}", color='white')
-        plt.grid(True, color='gray', linestyle='--', alpha=0.3)
+        ax.grid(False)
         plt.tight_layout()
-        plt.savefig(f'Spotify_Wrapped_Charts/{type}_listening_per_month.png', facecolor=fig.get_facecolor())
+        plt.savefig(f'Spotify_Wrapped_Charts/{type}_listening_per_month.png', dpi=300, facecolor=fig.get_facecolor())
         plt.close()
 
 # Function to write Spotify statistics to a text file
@@ -584,6 +591,8 @@ def update_image_label(window):
 
 
 def on_tab_changed(index, window):
+    update_month_dropdown(window)
+    update_type_dropdown(window)
     if index == 1:  # If it's the first tab (Visuals tab)
         update_image_label(window)
 

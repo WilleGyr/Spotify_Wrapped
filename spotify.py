@@ -1,8 +1,6 @@
 import sys, time, os
-from spotify_utils import getGoogleSheets, load_csv_to_dict, populate_months_dropdown, OnGenerateButtonClicked, on_tab_changed
+from spotify_utils import getGoogleSheets, load_csv_to_dict, populate_months_dropdown, OnGenerateButtonClicked, on_tab_changed, update_month_dropdown, update_type_dropdown, update_image_label, on_dropdown_changed
 from credentials import SPREADSHEET_ID
-from datetime import datetime
-import PyQt5
 from PyQt5 import QtWidgets, uic
 
 # Clear the terminal
@@ -26,10 +24,15 @@ data_dict = load_csv_to_dict(csv_filepath)
 
 # Call the function to populate the MonthsDropdown
 populate_months_dropdown(data_dict, window.MonthsDropdown)
+update_month_dropdown(window)
+update_type_dropdown(window)
 
 #window.GenerateButton.clicked.connect(OnGenerateButtonClicked)
 window.GenerateButton.clicked.connect(lambda: OnGenerateButtonClicked(window))
 window.tabWidget.currentChanged.connect(lambda index: on_tab_changed(1, window))
+
+window.Vis_TypeDropDown.currentIndexChanged.connect(lambda: update_image_label(window))
+window.Vis_MonthDropDown.currentIndexChanged.connect(lambda: on_dropdown_changed(window))
 
 
 
