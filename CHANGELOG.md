@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [6.0.0] - 2025-04-20
+
+### Added
+- Added fully functioning GUI with chart generator and chart viewer.
+
+## [5.0.0] - 2025-04-19
+
+### Comments
+- Ready for release
+
 ## [5.0.0-beta] - 2025-04-18
 
 ### Added

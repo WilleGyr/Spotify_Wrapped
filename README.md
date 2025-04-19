@@ -1,7 +1,5 @@
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![GitHub Release](https://img.shields.io/github/v/release/WilleGyr/Spotify_Wrapped)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v5.0.0)
 
-
-
 > ⚠️ **Notice**:  
 > This is the README for the experimental **version 6.0.0-beta** (major update with a gui for the application).  
 > If you want the latest stable release, please download **v5.0.0** from the [Releases page](https://github.com/yourname/yourrepo/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
@@ -13,6 +11,8 @@ This is a small project I'm working on a bit during my free time. It's my own ve
 It basically tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
 
 *The **[latest version](https://github.com/WilleGyr/Spotify_Wrapped/releases/latest)** requires a **[Spotify Developer account](https://developer.spotify.com/)**. If you don't have access to one, please download **[version 1.0.0](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v1.0.0)**. View the **[CHANGELOG](CHANGELOG)** for more information.
+
+![Alt text](Images/Interface_Showcase.gif)
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -53,25 +53,32 @@ h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=
 5. Paste your **CLIENT_ID** and **SECRET_ID** into `credentials.py`
 
 ### Usage
-1. Run `spotify.py`
-2. You will be prompted to specify your wrapped by entering a **month,** **year,** or **month and year** (in any order). Leave blank for complete wrapped for the current year.<br>
-Examples:
-    ```
-    $ March 2024
-    $ 2025 January
-    $ 2024
-    $ July
-    ```
-3. The script will download your Spotify data from the Google Sheet, analyze it, and generate two files:
-    - **spotify.csv**: A CSV file containing your Spotify listening data.
-    - **Spotify_Wrapped.txt**: A text file summarizing your Spotify Wrapped statistics.
-4. Open `Spotify_Wrapped.txt` to view your personalized Spotify Wrapped summary.
+1. <b>Run `spotify.py` </b><br>
+Launch the program to start.
+2. <b>View your Spotify Wrapped graphs</b><br>
+On the right side of the window, a graph will be visible immediately.<br>
+You can change which graph you want to view using the filters:
+    - <b>Time period</b>
+        - Any available month
+        - Whole year overview
+    - <b>Types</b>
+        - Basic Stats
+        - Top Artists
+        - Top Songs
+        - Listening Activity per Month (only available for "Whole Year")
+        - Top Genres (Only for "Whole Year")
+3. <b>Generate new charts</b><br>
+To create fresh charts based on the latest data:
+    - Select the desired time period.
+    - (Optional) Check the box if you want Genre charts included.
+    - Click the "Generate" button in the bottom right corner.
 
 ## Roadmap
 - [x] Add genre analysis
 - [x] Optimize genre calculations
 - [x] Add progress bars
 - [x] Support multiple spreadsheets
+- [x] GUI with chart viewer
 - [ ] Add heatmaps
 - [ ] Add playlist maker
 
