@@ -1,12 +1,19 @@
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![GitHub Release](https://img.shields.io/github/v/release/WilleGyr/Spotify_Wrapped)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v6.0.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-maroon.svg)](LICENSE) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![Release](https://img.shields.io/badge/Release-v6.0.0-blue)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v6.0.0)
+
 
 > ⚠️ **Notice**:  
 > This is the README for the experimental **version 6.0.1-beta** (updates to the GUI, including raw data viewer).  
 > If you want the latest stable release, please download **v6.0.0** from the [Releases page](https://github.com/yourname/yourrepo/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
 
-# Spotify Wrapped
+# Custom Spotify Wrapped
+*Flexible, personal, and fully under your control.*
 
-This is a small project I'm working on a bit during my free time. It's my own version of Spotify's Wrapped feature, where I have complete control of the stats I want to see.
+This is a personal project I've been building during my free time:
+a custom version of Spotify's Wrapped feature, fully under my own control.
+
+Instead of being limited to what Spotify chooses to show,
+this tool lets me generate and explore exactly the statistics and charts I want —
+from top artists and songs to total listening time, monthly trends, and even genre breakdowns.
 
 It basically tracks and analyzes your Spotify listening data and creates a custom Spotify Wrapped for you.
 
