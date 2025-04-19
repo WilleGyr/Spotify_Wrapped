@@ -53,61 +53,6 @@ QTabBar::tab:selected {
     <property name="tabBarAutoHide">
      <bool>false</bool>
     </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Generate</string>
-     </attribute>
-     <widget class="QPushButton" name="GenerateButton">
-      <property name="geometry">
-       <rect>
-        <x>550</x>
-        <y>500</y>
-        <width>141</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:lime</string>
-      </property>
-      <property name="text">
-       <string>Generate</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="MonthsDropdown">
-      <property name="geometry">
-       <rect>
-        <x>540</x>
-        <y>380</y>
-        <width>161</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:lime</string>
-      </property>
-      <item>
-       <property name="text">
-        <string>Whole Year</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QCheckBox" name="GenreCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>300</y>
-        <width>70</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color:white</string>
-      </property>
-      <property name="text">
-       <string>Genres</string>
-      </property>
-     </widget>
-    </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
       <string>Visuals</string>
@@ -117,8 +62,8 @@ QTabBar::tab:selected {
        <rect>
         <x>10</x>
         <y>0</y>
-        <width>1081</width>
-        <height>661</height>
+        <width>1080</width>
+        <height>660</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -213,9 +158,9 @@ QComboBox QAbstractItemView {
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>1120</x>
+        <x>1110</x>
         <y>-10</y>
-        <width>130</width>
+        <width>150</width>
         <height>50</height>
        </rect>
       </property>
@@ -233,6 +178,154 @@ QComboBox QAbstractItemView {
       </property>
       <property name="text">
        <string>Filters</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>360</y>
+        <width>150</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    color: #1DB954;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    background-color: transparent;
+    border-bottom: 2px solid #1DB954;
+	padding-bottom: 5px;
+    qproperty-alignment: AlignCenter;
+}</string>
+      </property>
+      <property name="text">
+       <string>Generate</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="MonthsDropdown">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>430</y>
+        <width>130</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+    background-color: #121212;
+    border: 2px solid #1DB954;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: white;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+}
+
+QComboBox::drop-down {
+    border: 0px;
+}
+
+QComboBox::down-arrow {
+    image: url(down_arrow_white.png); /* optional: custom arrow icon */
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #181818;
+    border: 1px solid #1DB954;
+    selection-background-color: #1DB954;
+    selection-color: black;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+}</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Whole Year</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QCheckBox" name="GenreCheckBox">
+      <property name="geometry">
+       <rect>
+        <x>1140</x>
+        <y>470</y>
+        <width>80</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QCheckBox {
+    color: white;
+    spacing: 8px;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    qproperty-alignment: AlignCenter;
+}
+
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+}
+
+QCheckBox::indicator:unchecked {
+    border: 2px solid #1DB954;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #1DB954;
+    border: 2px solid #1DB954;
+    border-radius: 4px;
+}</string>
+      </property>
+      <property name="text">
+       <string>Genres</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="GenerateButton">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>550</y>
+        <width>130</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background-color: #1DB954;
+    color: black;
+    border-radius: 12px;
+    padding: 8px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+QPushButton:hover {
+    background-color: #1ed760;
+}
+
+QPushButton:pressed {
+    background-color: #159c46;
+}</string>
+      </property>
+      <property name="text">
+       <string>Generate</string>
       </property>
      </widget>
     </widget>

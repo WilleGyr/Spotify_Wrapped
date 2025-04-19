@@ -592,7 +592,7 @@ def update_image_label(window):
 def on_tab_changed(index, window):
     update_month_dropdown(window)
     update_type_dropdown(window)
-    if index == 1:  # If it's the first tab (Visuals tab)
+    if index == 0:  # If it's the first tab (Visuals tab)
         update_image_label(window)
 
 def update_month_dropdown(window):
