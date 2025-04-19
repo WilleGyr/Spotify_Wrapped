@@ -1,4 +1,4 @@
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![GitHub Release](https://img.shields.io/github/v/release/WilleGyr/Spotify_Wrapped)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v4.0.1)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![GitHub Release](https://img.shields.io/github/v/release/WilleGyr/Spotify_Wrapped)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v5.0.0)
 
 
 
