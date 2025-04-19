@@ -153,8 +153,7 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         ax.text(i, v + max(stats_values)*0.01, str(v), ha='center', va='bottom', fontsize=9, color='white')
 
     ax.set_ylabel('Amount', color='white')
-    #ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='x', bottom=False, labelbottom=False)
+    ax.tick_params(axis='x', colors='white')
     ax.tick_params(axis='y', colors='white')
     ax.title.set_color('white')
     plt.title(f"Spotify {type} Stats {year}")
