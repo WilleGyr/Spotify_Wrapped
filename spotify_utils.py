@@ -9,6 +9,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from io import BytesIO
 from PIL import Image
 from PyQt5.QtGui import QPixmap
+from PyQt5 import QtWidgets
 import matplotlib as mpl
 import matplotlib.pyplot as plt  # Make sure this is also imported!
 
@@ -56,15 +57,23 @@ def load_csv_to_dict(filepath):
             data[i] = row  # Add each row to the dictionary with the index as the key
     return data  # Return the populated dictionary
 
-def fetch_artist_image(sp, artist_name):
+def fetch_artist_image(sp, artist_name, data_dict):
     try:
-        results = sp.search(q=f'artist:{artist_name}', type='artist', limit=1)
-        items = results['artists']['items']
-        if items and items[0]['images']:
-            return items[0]['images'][0]['url']  # Get the first (largest) image
+        # Find the first song for the given artist
+        for key, value in data_dict.items():
+            song_name = value[1]  # Column 2 = song name
+            song_artist = value[2]  # Column 3 = artist name
+            if song_artist.lower() == artist_name.lower():
+                # Search for the song on Spotify
+                results = sp.search(q=f'track:{song_name} artist:{artist_name}', type='track', limit=1)
+                tracks = results['tracks']['items']
+                if tracks and tracks[0]['album']['images']:
+                    return tracks[0]['album']['images'][0]['url']  # Get the first (largest) album image
+                break  # Only look for the first match
     except Exception as e:
         print(f"Error fetching image for artist {artist_name}: {e}")
     return None
+
 
 def fetch_song_image(sp, song_name, artist_name):
     try:
@@ -180,7 +189,7 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
             y = y_positions[i]
             ax.text(-max(counts)*0.02, y, artist, va='center', ha='right', fontsize=11, color='white')
 
-            img_url = fetch_artist_image(sp, artist)
+            img_url = fetch_artist_image(sp, artist, data_dict)
             if img_url:
                 response = requests.get(img_url)
                 img = Image.open(BytesIO(response.content))
@@ -517,6 +526,10 @@ def populate_months_dropdown(data_dict, dropdown):
     dropdown.addItems(sorted_months)
 
 def OnGenerateButtonClicked(window):
+    window.WaitLabel.setVisible(True)
+    window.DoneLabel.setVisible(False)
+    QtWidgets.QApplication.processEvents()
+
     selected_month = window.MonthsDropdown.currentText()
     print(f"Generating Spotify Wrapped for: {selected_month} 2025")
 
@@ -532,8 +545,9 @@ def OnGenerateButtonClicked(window):
     else:
         wrapped(data_dict, selected_month, "2025", check_genres=is_checked)
 
-
     print("Generation complete!")
+    window.WaitLabel.setVisible(False)
+    window.DoneLabel.setVisible(True)
 
 def update_image_label(window):
     window.ImageLabel.setStyleSheet("""
@@ -560,7 +574,8 @@ def update_image_label(window):
         'Basic Stats': 'basic_stats',
         'Top Artists': 'top_artists_with_images',
         'Top Songs': 'top_songs_with_images',
-        'Per Month': 'listening_per_month'
+        'Per Month': 'listening_per_month',
+        'Top Genres': 'top_genres'
     }
 
     type_suffix = type_suffixes.get(selected_type, '')
@@ -587,7 +602,6 @@ def update_image_label(window):
         window.ImageLabel.setScaledContents(True)
     else:
         window.ImageLabel.setText(f"No image found for {selected_month} - {selected_type}")
-
 
 def on_tab_changed(index, window):
     update_month_dropdown(window)
@@ -647,7 +661,7 @@ def update_type_dropdown(window):
     window.Vis_TypeDropDown.clear()
     window.Vis_TypeDropDown.addItems(["Basic Stats", "Top Artists", "Top Songs"])
     if window.Vis_MonthDropDown.currentText() == "Whole Year":
-        window.Vis_TypeDropDown.addItems(["Per Month"])
+        window.Vis_TypeDropDown.addItems(["Per Month", "Top Genres"])
 
 def on_dropdown_changed(window):
     update_type_dropdown(window)  # (if you want types to change based on month)

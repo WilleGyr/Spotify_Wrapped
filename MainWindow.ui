@@ -77,7 +77,7 @@ QTabBar::tab:selected {
       <property name="geometry">
        <rect>
         <x>1120</x>
-        <y>100</y>
+        <y>210</y>
         <width>130</width>
         <height>31</height>
        </rect>
@@ -91,6 +91,7 @@ QTabBar::tab:selected {
     color: white;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
+background-color:rgba(0,0,0,0)
 }
 
 QComboBox::drop-down {
@@ -118,7 +119,7 @@ QComboBox QAbstractItemView {
       <property name="geometry">
        <rect>
         <x>1120</x>
-        <y>150</y>
+        <y>260</y>
         <width>130</width>
         <height>31</height>
        </rect>
@@ -132,6 +133,7 @@ QComboBox QAbstractItemView {
     color: white;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
+background-color:rgba(0,0,0,0)
 }
 
 QComboBox::drop-down {
@@ -159,7 +161,7 @@ QComboBox QAbstractItemView {
       <property name="geometry">
        <rect>
         <x>1110</x>
-        <y>-10</y>
+        <y>140</y>
         <width>150</width>
         <height>50</height>
        </rect>
@@ -167,7 +169,7 @@ QComboBox QAbstractItemView {
       <property name="styleSheet">
        <string notr="true">QLabel {
     color: #1DB954;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
     background-color: transparent;
@@ -178,6 +180,9 @@ QComboBox QAbstractItemView {
       </property>
       <property name="text">
        <string>Filters</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignBottom|Qt::AlignHCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_3">
@@ -192,7 +197,7 @@ QComboBox QAbstractItemView {
       <property name="styleSheet">
        <string notr="true">QLabel {
     color: #1DB954;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
     background-color: transparent;
@@ -202,7 +207,10 @@ QComboBox QAbstractItemView {
 }</string>
       </property>
       <property name="text">
-       <string>Generate</string>
+       <string>Generate Charts</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignBottom|Qt::AlignHCenter</set>
       </property>
      </widget>
      <widget class="QComboBox" name="MonthsDropdown">
@@ -223,6 +231,7 @@ QComboBox QAbstractItemView {
     color: white;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
+background-color:rgba(0,0,0,0)
 }
 
 QComboBox::drop-down {
@@ -270,6 +279,7 @@ QComboBox QAbstractItemView {
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
     qproperty-alignment: AlignCenter;
+	background-color:rgba(0,0,0,0)
 }
 
 QCheckBox::indicator {
@@ -328,6 +338,115 @@ QPushButton:pressed {
        <string>Generate</string>
       </property>
      </widget>
+     <widget class="QLabel" name="WaitLabel">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>610</y>
+        <width>150</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red; background-color:rgba(0,0,0,0)</string>
+      </property>
+      <property name="text">
+       <string>Generating... Please wait!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter|Qt::AlignTop</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="DoneLabel">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>610</y>
+        <width>150</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#1DB954;
+background-color:rgba(0,0,0,0)</string>
+      </property>
+      <property name="text">
+       <string>Done! Charts created!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter|Qt::AlignTop</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="SpotifyLogoLabel">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>0</y>
+        <width>110</width>
+        <height>110</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>410</y>
+        <width>150</width>
+        <height>230</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: #191919;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>190</y>
+        <width>150</width>
+        <height>120</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    background-color: #191919;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>label_5</zorder>
+     <zorder>label_4</zorder>
+     <zorder>ImageLabel</zorder>
+     <zorder>Vis_MonthDropDown</zorder>
+     <zorder>Vis_TypeDropDown</zorder>
+     <zorder>label</zorder>
+     <zorder>label_3</zorder>
+     <zorder>MonthsDropdown</zorder>
+     <zorder>GenreCheckBox</zorder>
+     <zorder>GenerateButton</zorder>
+     <zorder>DoneLabel</zorder>
+     <zorder>WaitLabel</zorder>
+     <zorder>SpotifyLogoLabel</zorder>
     </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
