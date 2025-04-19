@@ -1,4 +1,5 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-maroon.svg)](LICENSE) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![Release](https://img.shields.io/badge/Release-v6.0.0-blue)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v6.0.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-maroon.svg)](LICENSE) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/WilleGyr/Spotify_Wrapped?label=Total%20commits&color=%2313A15C) [![made-with-python](https://img.shields.io/badge/Language-Python%203.11.2-1f425f.svg?logo=python)](https://www.python.org/) [![Release](https://img.shields.io/badge/Release-v6.0.0-blue)](https://github.com/WilleGyr/Spotify_Wrapped/releases/tag/v6.0.0) ![Status](https://img.shields.io/badge/Status-Active-darkgreen.svg) [![Last Commit](https://img.shields.io/github/last-commit/WilleGyr/Spotify_Wrapped?color=brightgreen&label=Last%20Commit)](https://github.com/WilleGyr/Spotify_Wrapped/commits/main)
+
 
 
 > ⚠️ **Notice**:  
