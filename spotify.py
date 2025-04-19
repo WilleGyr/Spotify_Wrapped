@@ -1,12 +1,20 @@
 import sys, time, os
-from spotify_utils import getGoogleSheets, load_csv_to_dict, wrapped
+from spotify_utils import getGoogleSheets, load_csv_to_dict, wrapped, populate_months_dropdown, OnGenerateButtonClicked
 from credentials import SPREADSHEET_ID
 from datetime import datetime
+import PyQt5
+from PyQt5 import QtWidgets, uic
 
 # Clear the terminal
-os.system('cls' if os.name == 'nt' else 'clear')
-
+#os.system('cls' if os.name == 'nt' else 'clear')
 start_time = time.time()
+
+# Start the mainwindow.ui
+app = QtWidgets.QApplication(sys.argv)
+window = uic.loadUi("mainwindow.ui")
+window.setWindowTitle("Spotify Wrapped")
+
+window.show()
 
 # Reset the Spotify_Stats.txt file
 with open('Spotify_Wrapped.txt', 'w') as f:
@@ -16,6 +24,17 @@ with open('Spotify_Wrapped.txt', 'w') as f:
 csv_filepath = getGoogleSheets(SPREADSHEET_ID, '', "spotify.csv")
 data_dict = load_csv_to_dict(csv_filepath)
 
+# Call the function to populate the MonthsDropdown
+populate_months_dropdown(data_dict, window.MonthsDropdown)
+
+#window.GenerateButton.clicked.connect(OnGenerateButtonClicked)
+window.GenerateButton.clicked.connect(lambda: OnGenerateButtonClicked(window))
+
+
+# Start the event loop to keep the application running
+sys.exit(app.exec_())
+
+'''
 # Prompt the user for input
 print(f"Specify year, month or month of year. Otherwise leave blank for the complete {datetime.now().year} wrapped:")
 #user_input = input("")
@@ -44,4 +63,4 @@ else:
 # Exit the program
 print("Spotify Wrapped has been successfully generated in the file Spotify_Wrapped.txt!")
 print("Process finished --- %s seconds ---" % (time.time() - start_time))
-sys.exit(0)
+'''

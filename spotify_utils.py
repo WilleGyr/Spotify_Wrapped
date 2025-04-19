@@ -2,7 +2,7 @@ import os, requests, sys, csv, math, spotipy
 from collections import Counter, defaultdict
 from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
-from credentials import CLIENT_ID, CLIENT_SECRET
+from credentials import CLIENT_ID, CLIENT_SECRET, SPREADSHEET_ID
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
@@ -288,7 +288,6 @@ def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_arti
         plt.savefig(f'Spotify_Wrapped_Charts/{type}_listening_per_month.png', facecolor=fig.get_facecolor())
         plt.close()
 
-
 # Function to write Spotify statistics to a text file
 def write_to_txt(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
     with open('Spotify_Wrapped.txt', 'a', encoding='utf-8') as f:
@@ -423,36 +422,36 @@ def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
     write(month_data, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
 
 # Function to wrap the monthly and yearly functions
-def wrapped(data_dict, first=None, second=None):
-    check_genres = input("Do you want to see the top genres? (write anything for yes): ")
-    if check_genres.lower() != '':
+def wrapped(data_dict, first=None, second=None, check_genres=True):
+    if check_genres:
         sorted_genre_counts = genre_finder(data_dict)
     else:
         sorted_genre_counts = None
-    # If only a year is given
-    if first and first.isdigit() and second == None:
+
+    if first and first.isdigit() and second is None:
         yearly_wrapped(data_dict, sorted_genre_counts, first, first)
 
-    # If only a month is given
-    elif first and second == None:
+    elif first and second is None:
         monthly_wrapped(first, str(datetime.now().year), data_dict, sorted_genre_counts)
-    
-    # If both a month and year are given
+
     elif first and not first.isdigit() and second and second.isdigit():
         monthly_wrapped(first, second, data_dict, sorted_genre_counts)
+
     elif first and first.isdigit() and second and not second.isdigit():
         monthly_wrapped(second, first, data_dict, sorted_genre_counts)
-    
-    # If neither a month nor year are given
-    elif first == None and second == None:
+
+    elif first is None and second is None:
         yearly_wrapped(data_dict, sorted_genre_counts, str(datetime.now().year), str(datetime.now().year))
-        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ]
         progress_bar = tqdm(total=100, desc="Writing results to .txt file", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
         for month in months:
             monthly_wrapped(month, str(datetime.now().year), data_dict, sorted_genre_counts)
             progress_bar.update(100/12)
-    
-    # If invalid arguments are given
+        progress_bar.close()
+
     else:
         print('Invalid arguments')
         sys.exit(1)
@@ -485,3 +484,44 @@ def duration_check(data_dict, bool=0):
     duration_ms = duration_ms // 60000
     
     return duration_ms
+
+def populate_months_dropdown(data_dict, dropdown):
+    """Populate the dropdown with unique months sorted in calendar order."""
+    months = set()
+    for entry in data_dict.values():
+        # Assuming the date is the first element in the list
+        date_str = entry[0] if len(entry) > 0 else None
+        if date_str:
+            try:
+                # Parse the date using the new format
+                month = datetime.strptime(date_str, "%B %d, %Y at %I:%M%p").strftime("%B")
+                months.add(month)
+            except ValueError:
+                pass  # Skip invalid date formats
+
+    # Sort months in the order they appear in a year
+    month_order = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    sorted_months = sorted(months, key=lambda m: month_order.index(m))
+    dropdown.addItems(sorted_months)
+
+def OnGenerateButtonClicked(window):
+    selected_month = window.MonthsDropdown.currentText()
+    print(f"Generating Spotify Wrapped for: {selected_month} 2025")
+
+    # Re-download the CSV
+    csv_filepath = getGoogleSheets(SPREADSHEET_ID, '', "spotify.csv")
+    data_dict = load_csv_to_dict(csv_filepath)
+
+    # Re-run the wrapped generation
+    is_checked = window.GenreCheckBox.isChecked()
+
+    if selected_month == "Whole Year":
+        wrapped(data_dict, check_genres=is_checked)
+    else:
+        wrapped(data_dict, selected_month, "2025", check_genres=is_checked)
+
+
+    print("Generation complete!")
