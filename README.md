@@ -3,8 +3,8 @@
 
 
 > ⚠️ **Notice**:  
-> This is the README for the experimental **version 5.0.0-beta** (major update with artist and album covers in graphs).  
-> If you want the latest stable release, please download **v4.0.1** from the [Releases page](https://github.com/yourname/yourrepo/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
+> This is the README for the experimental **version 6.0.0-beta** (major update with artist and album covers in graphs).  
+> If you want the latest stable release, please download **v5.0.0** from the [Releases page](https://github.com/yourname/yourrepo/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
 
 # Spotify Wrapped
 
