@@ -278,7 +278,6 @@ QComboBox QAbstractItemView {
     spacing: 8px;
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
-    qproperty-alignment: AlignCenter;
 	background-color:rgba(0,0,0,0)
 }
 
