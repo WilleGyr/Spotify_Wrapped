@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #020812</string>
+   <string notr="true">background-color: #121212</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -112,25 +112,20 @@ QTabBar::tab:selected {
      <attribute name="title">
       <string>Visuals</string>
      </attribute>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="ImageLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>240</y>
-        <width>1241</width>
-        <height>151</height>
+        <x>10</x>
+        <y>0</y>
+        <width>1081</width>
+        <height>661</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>88</pointsize>
-       </font>
+      <property name="styleSheet">
+       <string notr="true">background-color:white</string>
       </property>
       <property name="text">
-       <string>IN PROGRESS</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <string/>
       </property>
      </widget>
     </widget>

@@ -1,5 +1,5 @@
 import sys, time, os
-from spotify_utils import getGoogleSheets, load_csv_to_dict, wrapped, populate_months_dropdown, OnGenerateButtonClicked
+from spotify_utils import getGoogleSheets, load_csv_to_dict, populate_months_dropdown, OnGenerateButtonClicked, on_tab_changed
 from credentials import SPREADSHEET_ID
 from datetime import datetime
 import PyQt5
@@ -29,38 +29,9 @@ populate_months_dropdown(data_dict, window.MonthsDropdown)
 
 #window.GenerateButton.clicked.connect(OnGenerateButtonClicked)
 window.GenerateButton.clicked.connect(lambda: OnGenerateButtonClicked(window))
+window.tabWidget.currentChanged.connect(lambda index: on_tab_changed(1, window))
+
 
 
 # Start the event loop to keep the application running
 sys.exit(app.exec_())
-
-'''
-# Prompt the user for input
-print(f"Specify year, month or month of year. Otherwise leave blank for the complete {datetime.now().year} wrapped:")
-#user_input = input("")
-user_input = ""
-print("Preparing Spotify Wrapped...")
-
-# Split the input and handle cases where the input is blank or has only one value
-inputs = user_input.split()
-first = inputs[0] if len(inputs) > 0 else None
-second = inputs[1] if len(inputs) > 1 else None
-
-# Capitalize the first and second values if they are not digits
-if first and not first.isdigit():
-    first = first.capitalize()
-if second and not second.isdigit():
-    second = second.capitalize()
-
-# Call the wrapped function with the appropriate arguments
-if first and not second:
-    wrapped(data_dict, first)
-elif first and second:
-    wrapped(data_dict, first, second)
-else:
-    wrapped(data_dict)
-
-# Exit the program
-print("Spotify Wrapped has been successfully generated in the file Spotify_Wrapped.txt!")
-print("Process finished --- %s seconds ---" % (time.time() - start_time))
-'''

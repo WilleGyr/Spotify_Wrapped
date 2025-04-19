@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from io import BytesIO
 from PIL import Image
+from PyQt5.QtGui import QPixmap
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSheets(spreadsheet_ids, outDir, outFile):
@@ -386,6 +387,7 @@ def yearly_wrapped(data_dict, sorted_genre_counts, year, write_year=None):
 
     # Write the results to a text file
     write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs,"Yearly", write_year)
+    write_to_txt(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs,"Yearly", write_year)
 
 # Function to calculate Spotify Wrapped statistics for a specific month
 def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
@@ -420,6 +422,7 @@ def monthly_wrapped(month, year, data_dict, sorted_genre_counts):
     
     # Write the results to a text file
     write(month_data, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
+    write_to_txt(month_data, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, month, year)
 
 # Function to wrap the monthly and yearly functions
 def wrapped(data_dict, first=None, second=None, check_genres=True):
@@ -525,3 +528,25 @@ def OnGenerateButtonClicked(window):
 
 
     print("Generation complete!")
+
+def update_image_label(window):
+    directory = 'Spotify_Wrapped_Charts'
+
+    if not os.path.exists(directory):
+        window.ImageLabel.setText("Directory does not exist")
+        return
+
+    # Get all files (filter to only images if needed)
+    image_files = [f for f in os.listdir(directory) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+
+    if image_files:
+        first_image_path = os.path.join(directory, image_files[0])
+        pixmap = QPixmap(first_image_path)
+        window.ImageLabel.setPixmap(pixmap)
+        window.ImageLabel.setScaledContents(True)  # Scale image nicely inside the label
+    else:
+        window.ImageLabel.setText("Directory empty")
+
+def on_tab_changed(index, window):
+    if index == 1:  # If it's the first tab (Visuals tab)
+        update_image_label(window)
