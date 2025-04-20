@@ -4,7 +4,7 @@
 
 > ⚠️ **Notice**:  
 > This is the README for the experimental **version 6.0.1-beta** (updates to the GUI, including raw data viewer).  
-> If you want the latest stable release, please download **v6.0.0** from the [Releases page](https://github.com/yourname/yourrepo/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
+> If you want the latest stable release, please download **v6.0.0** from the [Releases page](https://github.com/WilleGyr/Spotify_Wrapped/releases) or check out the [Stable branch](https://github.com/WilleGyr/Spotify_Wrapped/tree/stable).
 
 # Custom Spotify Wrapped
 *Flexible, personal, and fully under your control.*
