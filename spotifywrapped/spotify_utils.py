@@ -1,3 +1,9 @@
+from spotifywrapped.credentials_loader import load_credentials
+
+creds = load_credentials()
+SPREADSHEET_ID = creds["SPREADSHEET_ID"]
+CLIENT_ID = creds["CLIENT_ID"]
+CLIENT_SECRET = creds["CLIENT_SECRET"]
 import os, requests, sys, csv, math, spotipy
 from collections import Counter, defaultdict
 from datetime import datetime
@@ -12,12 +18,6 @@ from PyQt5.QtGui import QPixmap
 from PyQt5 import QtWidgets
 import matplotlib as mpl
 import matplotlib.pyplot as plt  # Make sure this is also imported!
-from spotifywrapped.credentials_loader import load_credentials
-
-creds = load_credentials()
-SPREADSHEET_ID = creds["SPREADSHEET_ID"]
-CLIENT_ID = creds["CLIENT_ID"]
-CLIENT_SECRET = creds["CLIENT_SECRET"]
 
 # Function to download a Google Sheet as a CSV file
 def getGoogleSheets(spreadsheet_ids, outDir, outFile):

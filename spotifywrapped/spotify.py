@@ -1,3 +1,9 @@
+from spotifywrapped.credentials_loader import load_credentials
+
+creds = load_credentials()
+SPREADSHEET_ID = creds["SPREADSHEET_ID"]
+CLIENT_ID = creds["CLIENT_ID"]
+CLIENT_SECRET = creds["CLIENT_SECRET"]
 import sys, time, os, json
 from spotifywrapped.spotify_utils import (
     getGoogleSheets,
@@ -14,10 +20,6 @@ from spotifywrapped.spotify_utils import (
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QVBoxLayout
-from spotifywrapped.credentials_loader import load_credentials
-
-creds = load_credentials()
-SPREADSHEET_ID = creds["SPREADSHEET_ID"]
 
 def main():
     # Clear the terminal
