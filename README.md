@@ -87,12 +87,12 @@ To create fresh charts based on the latest data:
 - [x] Add progress bars
 - [x] Support multiple spreadsheets
 - [x] GUI with chart viewer
-- [] Genre Explorer
-    - [] List of all genres
-    - [] Every artist per genre
-- [] Raw Data Explorer
-    - [] View the whole csv file
-    - [] Filter by artist, genres songs and months
+- [ ] Genre Explorer
+    - [ ] List of all genres
+    - [ ] Every artist per genre
+- [ ] Raw Data Explorer
+    - [ ] View the whole csv file
+    - [ ] Filter by artist, genres songs and months
 
 ## License
 Distributed under the MIT License. See the [LICENSE](LICENSE) file for more information.
