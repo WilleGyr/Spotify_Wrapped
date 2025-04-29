@@ -2,3 +2,9 @@ spotify.csv
 Spotify_Wrapped.txt
 Spotify_Wrapped_Charts/
 Spotify_Logo.png
+build/
+.venv/
+.github/
+__pycache__/
+.cache
+spotifywrapped.egg-info/
