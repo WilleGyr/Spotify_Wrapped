@@ -142,6 +142,9 @@ def calculate_monthly_listening(data_dict):
     return monthly_counts
 
 def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
+    creds = load_credentials()
+    CLIENT_ID = creds["CLIENT_ID"]
+    CLIENT_SECRET = creds["CLIENT_SECRET"]
     mpl.rcParams['text.antialiased'] = True
     os.makedirs('Spotify_Wrapped_Charts', exist_ok=True)
 
