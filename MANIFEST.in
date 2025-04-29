@@ -1,0 +1,3 @@
+include spotifywrapped/*.ui
+include spotifywrapped/*.png
+include spotifywrapped/*.jpg

@@ -2,7 +2,7 @@ import os, requests, sys, csv, math, spotipy
 from collections import Counter, defaultdict
 from datetime import datetime
 from spotipy.oauth2 import SpotifyClientCredentials
-from credentials import CLIENT_ID, CLIENT_SECRET, SPREADSHEET_ID
+from spotifywrapped.credentials import CLIENT_ID, CLIENT_SECRET, SPREADSHEET_ID
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
