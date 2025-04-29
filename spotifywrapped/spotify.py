@@ -1,4 +1,4 @@
-import sys, time, os
+import sys, time, os, json
 from spotifywrapped.spotify_utils import (
     getGoogleSheets,
     load_csv_to_dict,
@@ -10,10 +10,14 @@ from spotifywrapped.spotify_utils import (
     update_image_label,
     on_dropdown_changed
 )
-from spotifywrapped.credentials import SPREADSHEET_ID
+#from spotifywrapped.credentials import SPREADSHEET_ID
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QVBoxLayout
+from spotifywrapped.credentials_loader import load_credentials
+
+creds = load_credentials()
+SPREADSHEET_ID = creds["SPREADSHEET_ID"]
 
 def main():
     # Clear the terminal
