@@ -21,8 +21,8 @@ window.DoneLabel.setVisible(False)
 
 if os.path.exists("Spotify_Logo.png"):
     logo_pixmap = QPixmap("Spotify_Logo.png")
-window.SpotifyLogoLabel.setPixmap(logo_pixmap)
-window.SpotifyLogoLabel.setScaledContents(True)
+    window.SpotifyLogoLabel.setPixmap(logo_pixmap)
+    window.SpotifyLogoLabel.setScaledContents(True)
 
 # Reset the Spotify_Stats.txt file
 with open('Spotify_Wrapped.txt', 'w') as f:
