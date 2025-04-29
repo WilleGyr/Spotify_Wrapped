@@ -2,7 +2,7 @@ import sys, time, os
 from spotify_utils import getGoogleSheets, load_csv_to_dict, populate_months_dropdown, OnGenerateButtonClicked, on_tab_changed, update_month_dropdown, update_type_dropdown, update_image_label, on_dropdown_changed
 from credentials import SPREADSHEET_ID
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QVBoxLayout
 
 # Clear the terminal
@@ -23,6 +23,10 @@ if os.path.exists("Spotify_Logo.png"):
     logo_pixmap = QPixmap("Spotify_Logo.png")
     window.SpotifyLogoLabel.setPixmap(logo_pixmap)
     window.SpotifyLogoLabel.setScaledContents(True)
+
+if os.path.exists("Spotify_Wrapped_Icon.png"):
+    app.setWindowIcon(QIcon("Spotify_Wrapped_Icon.png"))
+
 
 # Reset the Spotify_Stats.txt file
 with open('Spotify_Wrapped.txt', 'w') as f:
