@@ -2,8 +2,8 @@ import os
 import json
 
 def load_credentials():
-    user_home = os.path.expanduser("~")  # Home directory
-    credentials_path = os.path.join(user_home, ".spotifywrapped_credentials.json")
+    #user_home = os.path.expanduser("~")  # Home directory
+    credentials_path = os.path.join("spotifywrapped_credentials.json")
 
     if not os.path.exists(credentials_path):
         raise FileNotFoundError(
