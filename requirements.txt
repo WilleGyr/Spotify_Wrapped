@@ -1,0 +1,6 @@
+requests
+spotipy
+tqdm
+matplotlib
+PyQt5
+pillow
