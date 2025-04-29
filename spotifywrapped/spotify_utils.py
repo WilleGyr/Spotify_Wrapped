@@ -1,9 +1,5 @@
 from spotifywrapped.credentials_loader import load_credentials
 
-creds = load_credentials()
-SPREADSHEET_ID = creds["SPREADSHEET_ID"]
-CLIENT_ID = creds["CLIENT_ID"]
-CLIENT_SECRET = creds["CLIENT_SECRET"]
 import os, requests, sys, csv, math, spotipy
 from collections import Counter, defaultdict
 from datetime import datetime
@@ -92,6 +88,9 @@ def fetch_song_image(sp, song_name, artist_name):
     return None
 
 def genre_finder(data_dict):
+    creds = load_credentials()
+    CLIENT_ID = creds["CLIENT_ID"]
+    CLIENT_SECRET = creds["CLIENT_SECRET"]
     progress_bar = tqdm(total=100, desc="Calculating genre counts", bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]")
     auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     sp = spotipy.Spotify(auth_manager=auth_manager)
@@ -484,6 +483,9 @@ def wrapped(data_dict, first=None, second=None, check_genres=True):
         sys.exit(1)
 
 def duration_check(data_dict, bool=0):
+    creds = load_credentials()
+    CLIENT_ID = creds["CLIENT_ID"]
+    CLIENT_SECRET = creds["CLIENT_SECRET"]
     track_ids = [data_dict[i][3] for i in data_dict]
     auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     sp = spotipy.Spotify(auth_manager=auth_manager)
@@ -535,6 +537,8 @@ def populate_months_dropdown(data_dict, dropdown):
     dropdown.addItems(sorted_months)
 
 def OnGenerateButtonClicked(window):
+    creds = load_credentials()
+    SPREADSHEET_ID = creds["SPREADSHEET_ID"]
     window.WaitLabel.setVisible(True)
     window.DoneLabel.setVisible(False)
     QtWidgets.QApplication.processEvents()
