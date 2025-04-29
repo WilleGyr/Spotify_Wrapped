@@ -27,11 +27,6 @@ if os.path.exists("Spotify_Logo.png"):
 if os.path.exists("Spotify_Wrapped_Icon.png"):
     app.setWindowIcon(QIcon("Spotify_Wrapped_Icon.png"))
 
-
-# Reset the Spotify_Stats.txt file
-with open('Spotify_Wrapped.txt', 'w') as f:
-    f.write('----- Spotify Wrapped -----\n\n')
-
 # Download the CSV file from Google Sheets and load it into a dictionary
 csv_filepath = getGoogleSheets(SPREADSHEET_ID, '', "spotify.csv")
 data_dict = load_csv_to_dict(csv_filepath)
