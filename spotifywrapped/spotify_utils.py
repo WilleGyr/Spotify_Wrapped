@@ -142,12 +142,12 @@ def calculate_monthly_listening(data_dict):
 
 def write(data_dict, sorted_genre_counts, total_songs, unique_songs, unique_artists, listening_time, top_artists, top_songs, type='Yearly', year=str(datetime.now().year)):
     creds = load_credentials()
-    CLIENT_ID = creds["CLIENT_ID"]
-    CLIENT_SECRET = creds["CLIENT_SECRET"]
+    client_id = creds["CLIENT_ID"]
+    client_secret = creds["CLIENT_SECRET"]
     mpl.rcParams['text.antialiased'] = True
     os.makedirs('Spotify_Wrapped_Charts', exist_ok=True)
 
-    auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
     # --- Basic Statistics ---
@@ -484,10 +484,10 @@ def wrapped(data_dict, first=None, second=None, check_genres=True):
 
 def duration_check(data_dict, bool=0):
     creds = load_credentials()
-    CLIENT_ID = creds["CLIENT_ID"]
-    CLIENT_SECRET = creds["CLIENT_SECRET"]
+    client_id = creds["CLIENT_ID"]
+    client_secret = creds["CLIENT_SECRET"]
     track_ids = [data_dict[i][3] for i in data_dict]
-    auth_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
     # Split track_ids into chunks of 50 (maximum allowed by Spotify API)
@@ -538,7 +538,7 @@ def populate_months_dropdown(data_dict, dropdown):
 
 def OnGenerateButtonClicked(window):
     creds = load_credentials()
-    SPREADSHEET_ID = creds["SPREADSHEET_ID"]
+    spreadsheet_id = creds["SPREADSHEET_ID"]
     window.WaitLabel.setVisible(True)
     window.DoneLabel.setVisible(False)
     QtWidgets.QApplication.processEvents()
@@ -547,7 +547,7 @@ def OnGenerateButtonClicked(window):
     print(f"Generating Spotify Wrapped for: {selected_month} 2025")
 
     # Re-download the CSV
-    csv_filepath = getGoogleSheets(SPREADSHEET_ID, '', "spotify.csv")
+    csv_filepath = getGoogleSheets(spreadsheet_id, '', "spotify.csv")
     data_dict = load_csv_to_dict(csv_filepath)
 
     # Re-run the wrapped generation
