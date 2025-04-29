@@ -36,12 +36,13 @@ It basically tracks and analyzes your Spotify listening data and creates a custo
 1. Make sure you have **[Python 3.11.2](https://www.python.org/downloads/)** installed.<br>
 Compatibility with other versions is not guaranteed
 
-2. Install all the necessary libraries found in **[requirements.txt](requirements.txt)** by running:
+2. Install the package by running:
     ```
-    $ pip install -r requirements.txt
+    $ pip install git+https://github.com/WilleGyr/Spotify_Wrapped.git@main
     ```
-3. **Google Sheet** connected to your **Spotify** account through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
-4. An active **[Spotify Developer account](https://developer.spotify.com/)**
+3. Create a file named spotifywrapped_credentials.json that follows the **[template](spotifywrapped_credentials_template.json)**. Place it in the directory you are going to run the program from
+4. **Google Sheet** connected to your **Spotify** account through **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)**. (**Guide below**)
+5. An active **[Spotify Developer account](https://developer.spotify.com/)**
  
 ### Google Sheet Setup
 1. Sign up and connect **[this IFTTT applet](https://ifttt.com/applets/nin7BxVm-keep-a-log-of-your-recently-played-tracks)** to your Spotify account and Google Drive.
@@ -58,8 +59,10 @@ h<span>ttps://docs.goo</span>gle.com/spreadsheets/d/**SPREADSHEET_ID**/edit?gid=
 5. Paste your **CLIENT_ID** and **SECRET_ID** into `credentials.py`
 
 ### Usage
-1. <b>Run `spotify.py` </b><br>
-Launch the program to start.
+1. <b> Run this command to launch the program </b>
+```
+$ spotifywrapped
+```
 2. <b>View your Spotify Wrapped graphs</b><br>
 On the right side of the window, a graph will be visible immediately.<br>
 You can change which graph you want to view using the filters:
