@@ -1,1 +1,6 @@
-
+title: My GitHub Page
+description: A personal site hosted on GitHub Pages.
+theme: jekyll-theme-merlot
+author: William Gyrulf
+url: "https://willegyr.github.io/Spotify_Wrapped/"
+show_excerpts: true
