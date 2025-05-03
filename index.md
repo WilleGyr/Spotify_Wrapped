@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: default
 title: Welcome to My Site
 ---
 
@@ -12,3 +12,4 @@ This is my personal GitHub Pages website.
 - 📬 Contact me at [you@example.com](mailto:you@example.com)
 
 Stay tuned for updates!
+{% include_relative README.md %}
