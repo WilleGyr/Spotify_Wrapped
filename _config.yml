@@ -7,3 +7,10 @@ author: William Gyrulf
 url: "https://willegyr.github.io/Spotify_Wrapped/"
 show_excerpts: true
 show_downloads: true
+# Custom CSS override
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      css: /assets/css/style.css
