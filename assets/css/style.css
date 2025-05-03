@@ -1,0 +1,37 @@
+/* Dark mode override for Cayman theme */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+a {
+  color: #80cbc4;
+}
+
+a:hover {
+  color: #4db6ac;
+}
+
+.page-header {
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #333;
+}
+
+.project-name,
+.project-tagline {
+  color: #ffffff;
+}
+
+.main-content {
+  background-color: #121212;
+}
+
+.highlight pre,
+.highlight code {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+footer {
+  color: #888;
+}
