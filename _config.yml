@@ -1,6 +1,9 @@
 title: My GitHub Page
 description: A personal site hosted on GitHub Pages.
-theme: jekyll-theme-merlot
+remote_theme: pages-themes/cayman@v0.2.0
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
 author: William Gyrulf
 url: "https://willegyr.github.io/Spotify_Wrapped/"
 show_excerpts: true
+show_downloads: [true]
