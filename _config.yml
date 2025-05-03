@@ -6,4 +6,4 @@ plugins:
 author: William Gyrulf
 url: "https://willegyr.github.io/Spotify_Wrapped/"
 show_excerpts: true
-show_downloads: [true]
+show_downloads: true
