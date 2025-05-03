@@ -37,3 +37,4 @@ You’ll need:
 4. One command:  
    ```bash
    pip install git+https://github.com/WilleGyr/Spotify_Wrapped.git@main
+   ```
